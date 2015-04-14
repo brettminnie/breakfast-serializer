@@ -19,7 +19,6 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetUp()
     {
-        $this->assertTrue($this->instance instanceof Serializable);
         $this->assertTrue($this->instance instanceof Serializer);
     }
 }

@@ -1,6 +1,9 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer;
+namespace BDBStudios\BreakfastSerializer\Tests;
+
+use BDBStudios\BreakfastSerializer\Serializable;
+use BDBStudios\BreakfastSerializer\Serializer;
 
 class SerializerTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,6 +14,12 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->instance ;
+        $this->instance = \Mockery::mock('BDBStudios\BreakfastSerializer\Serializer');
+    }
+
+    public function testSetUp()
+    {
+        $this->assertTrue($this->instance instanceof Serializable);
+        $this->assertTrue($this->instance instanceof Serializer);
     }
 }

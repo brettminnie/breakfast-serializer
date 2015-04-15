@@ -20,16 +20,16 @@ interface Serializable
     public static function getSerializer($dataFormat = Serializable::FORMAT_JSON);
 
     /**
-     * @param array $data
+     * @param object $data
      * @param int   $dataFormat
      * @return string
      */
-    public function serialize(array $data, $dataFormat = Serializable::FORMAT_JSON);
+    public function serialize($data, $dataFormat = Serializable::FORMAT_JSON);
 
     /**
-     * @param     $data
-     * @param int $dataFormat
-     * @return mixed
+     * @param array $data
+     * @param int   $dataFormat
+     * @return object
      */
-    public function deserialize($data, $dataFormat = Serializable::FORMAT_JSON);
+    public function deserialize(array $data, $dataFormat = Serializable::FORMAT_JSON);
 }

@@ -6,7 +6,7 @@ use BDBStudios\BreakfastSerializer\Serializer;
 
 class Foo {
     protected $var1 = true;
-    protected $var2 = foo;
+    protected $var2 = 'foo';
     protected $uid;
 
     public function __construct()
@@ -20,9 +20,9 @@ class Bar {
 
     public function __construct()
     {
-        $foo = array();
-        $foo[] = new Foo();
-        $foo[] = new Foo();
+        $this->foo = array();
+        $this->foo[] = new Foo();
+        $this->foo[] = new Foo();
     }
 }
 class SerializerTest extends \PHPUnit_Framework_TestCase
@@ -44,7 +44,7 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
 
     public function testSerialize()
     {
-        $test = new Bar;
+        $test = new Bar();
         $data = $this->instance->serialize($test);
 
         var_dump($data);die;

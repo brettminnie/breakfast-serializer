@@ -65,7 +65,6 @@ class Serializer implements Serializable
 
                 return json_encode(
                     $this->objectToArray(
-                        true,
                         $data
                     )
                 );
@@ -78,29 +77,52 @@ class Serializer implements Serializable
 
 
     /**
+     * @param      $baseObject
      * @param bool $exposeClassname
-     * @param null $baseObject
      * @return array
      */
-    protected function objectToArray($exposeClassname = false, $baseObject = null)
+    protected function objectToArray($baseObject, $exposeClassname = true)
     {
         $data = array();
-        $baseObject = (is_null($baseObject)) ? $this : $baseObject;
-        $objAsArray = is_object($baseObject) ? get_object_vars($baseObject) : $baseObject;
+
+        $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
 
         foreach ($objAsArray as $key => $val) {
             $val        =
-                (is_array($val) || is_object($val)) ? $this->objectToArray($exposeClassname, $val) : $val;
-            $data[$key] = $val;
+                (is_array($val) || is_object($val)) ? $this->objectToArray($val, $exposeClassname) : $val;
+            $data[$this->cleanVariableName($key, $baseObject)] = $val;
         }
 
-        if (true === $exposeClassname) {
+        if (true === $exposeClassname && is_object($baseObject)) {
             $data['className'] = get_class($baseObject);
+        } elseif (true === $exposeClassname && is_array($baseObject)) {
+            $data['className'] = get_class(array_pop($baseObject));
         }
 
         return $data;
     }
 
+    /**
+     * @param string  $variableName
+     * @param string  $containingClass
+     * @return string
+     */
+    protected function cleanVariableName($variableName, $containingClass)
+    {
+        $className = '';
 
+        if (true === is_object($containingClass)) {
+            $className = get_class($containingClass);
+        } elseif (true === is_array($containingClass)) {
+            $className = get_class(array_pop($containingClass));
+        }
+
+        $cleanedName = '';
+
+        $cleanedName = str_replace('*', '', $variableName);
+        $cleanedName = str_replace($className, '', $cleanedName);
+
+        return $cleanedName;
+    }
 
 }

@@ -31,5 +31,5 @@ interface Serializable
      * @param int   $dataFormat
      * @return object
      */
-    public function deserialize(array $data, $dataFormat = Serializable::FORMAT_JSON);
+    public function deserialize($data, $dataFormat = Serializable::FORMAT_JSON);
 }

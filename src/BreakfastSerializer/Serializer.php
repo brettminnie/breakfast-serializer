@@ -44,15 +44,20 @@ class Serializer implements Serializable
     /**
      * @inheritDoc
      */
-    public function deserialize(array $data, $dataFormat = Serializable::FORMAT_JSON)
+    public function deserialize($data, $dataFormat = Serializable::FORMAT_JSON)
     {
         if (Serializable::FORMAT_JSON !== $dataFormat) {
             throw new \LogicException('Currently only JSON is supported');
         }
 
-        $object = null;
-
-        return $object;
+        switch ($dataFormat) {
+            case Serializable::FORMAT_JSON :
+                $data = json_decode($data, true);
+                return $this->arrayToObject(
+                    $data
+                );
+                break;
+        }
     }
 
     /**
@@ -68,26 +73,65 @@ class Serializer implements Serializable
 
         switch ($dataFormat) {
             case Serializable::FORMAT_JSON :
-
                 return json_encode(
                     $this->objectToArray(
                         $data
                     )
                 );
-
                 break;
         }
-
-        return null;
     }
 
     /**
-     * @param  array $data
-     * @return object
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
      */
     protected function arrayToObject(array $data)
     {
+        $object = new $data['className']();
 
+        $reflection = new \ReflectionClass($data['className']);
+
+        $breadth = array();
+
+        foreach($data as $key=>$value) {
+            if (true === is_array($value)) {
+                $breadth[$key] = $value;
+            } else {
+                try {
+                    $property = $reflection->getProperty($key);
+                    $property->setAccessible(true);
+                    $property->setValue($object, $value);
+                } catch (\ReflectionException $e) {
+                    //Non property so we ignore this
+                } catch (\Exception $e) {
+                    throw $e;
+                }
+            }
+        }
+
+        foreach($breadth as $key => $value) {
+            if(true === is_array($value)) {
+                foreach ($value as $instance) {
+                    $object = $this->arrayToObject($instance);
+                }
+            } else {
+                $object = $this->arrayToObject($value);
+            }
+
+            try {
+                $property = $reflection->getProperty($key);
+                $property->setAccessible(true);
+                $property->setValue($object, $value);
+            } catch (\ReflectionException $e) {
+                //Non property so we ignore this
+            } catch (\Exception $e) {
+                throw $e;
+            }
+        }
+
+        return $object;
     }
 
     /**

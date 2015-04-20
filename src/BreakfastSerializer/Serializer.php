@@ -95,8 +95,6 @@ class Serializer implements Serializable
 
         if (true === $exposeClassname && is_object($baseObject)) {
             $data['className'] = get_class($baseObject);
-        } elseif (true === $exposeClassname && is_array($baseObject)) {
-            $data['className'] = get_class(array_pop($baseObject));
         }
 
         return $data;
@@ -116,8 +114,6 @@ class Serializer implements Serializable
         } elseif (true === is_array($containingClass)) {
             $className = get_class(array_pop($containingClass));
         }
-
-
 
         $cleanedName = str_replace('*', '', $variableName);
         $cleanedName = str_replace($className, '', $cleanedName);

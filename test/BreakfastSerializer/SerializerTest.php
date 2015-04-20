@@ -72,12 +72,36 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->instance instanceof Serializer);
     }
 
+    public function testSerializeSimpleClass()
+    {
+        $testInstance = new Simple();
+
+        $data = $this->instance->serialize($testInstance);
+        $this->assertTrue(is_string($data));
+
+        $data = json_decode($data, true);
+        $this->assertTrue(is_array($data));
+
+        $this->assertTrue(array_key_exists('name', $data));
+        $this->assertTrue(array_key_exists('uid', $data));
+    }
+
     public function testSerializeSimpleContainer()
     {
         $test = new SimpleContainer();
         $data = $this->instance->serialize($test);
 
         $this->assertTrue(is_string($data));
-        $decodedData = json_decode($data);
+        $decodedData = json_decode($data, true);
+
+        $this->assertTrue(is_array($decodedData));
+
+        $this->assertCount(2, $decodedData['simpleArray']);
+
+        $this->assertEquals('SimpleContainer Instance', $decodedData['name']);
+        $this->assertEquals('SimpleClass Instance', $decodedData['simpleArray'][0]['name']);
+
+        $this->assertTrue(array_key_exists('className', $decodedData));
+        $this->assertTrue(array_key_exists('className', $decodedData['simpleArray'][0]));
     }
 }

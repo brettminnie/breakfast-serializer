@@ -46,7 +46,13 @@ class Serializer implements Serializable
      */
     public function deserialize(array $data, $dataFormat = Serializable::FORMAT_JSON)
     {
-        return null;
+        if (Serializable::FORMAT_JSON !== $dataFormat) {
+            throw new \LogicException('Currently only JSON is supported');
+        }
+
+        $object = null;
+
+        return $object;
     }
 
     /**
@@ -75,6 +81,14 @@ class Serializer implements Serializable
         return null;
     }
 
+    /**
+     * @param  array $data
+     * @return object
+     */
+    protected function arrayToObject(array $data)
+    {
+
+    }
 
     /**
      * @param      $baseObject

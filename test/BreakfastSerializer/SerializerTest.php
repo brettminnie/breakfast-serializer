@@ -70,6 +70,7 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
     public function testSetUp()
     {
         $this->assertTrue($this->instance instanceof Serializer);
+        $this->assertEquals(Serializer::FORMAT_JSON, $this->instance->getFormat());
     }
 
     public function testSerializeSimpleClass()
@@ -85,6 +86,7 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('name', $data));
         $this->assertTrue(array_key_exists('uid', $data));
     }
+
 
     public function testSerializeSimpleContainer()
     {
@@ -103,5 +105,15 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(array_key_exists('className', $decodedData));
         $this->assertTrue(array_key_exists('className', $decodedData['simpleArray'][0]));
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Currently only JSON is supported
+     */
+    public function testSerializeUnsupportedFormatThrowsException()
+    {
+        $object = new \stdClass();
+        $this->instance->serialize($object, Serializer::FORMAT_PHP);
     }
 }

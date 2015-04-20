@@ -109,7 +109,7 @@ class Serializer implements Serializable
      */
     protected function cleanVariableName($variableName, $containingClass)
     {
-        $className = '';
+        $cleanedName = $className = '';
 
         if (true === is_object($containingClass)) {
             $className = get_class($containingClass);
@@ -117,12 +117,12 @@ class Serializer implements Serializable
             $className = get_class(array_pop($containingClass));
         }
 
-        $cleanedName = '';
+
 
         $cleanedName = str_replace('*', '', $variableName);
         $cleanedName = str_replace($className, '', $cleanedName);
 
-        return $cleanedName;
+        return trim($cleanedName);
     }
 
 }

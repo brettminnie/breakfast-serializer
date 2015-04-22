@@ -5,6 +5,7 @@ namespace BDBStudios\BreakfastSerializer;
 /**
  * Class Serializer
  * @package BDBStudios
+ * @todo This will become a factory for each of the formats
  */
 class Serializer implements Serializable
 {
@@ -36,7 +37,7 @@ class Serializer implements Serializable
      */
     public static function getSerializer($dataFormat = Serializable::FORMAT_JSON)
     {
-        $instance = new self($dataFormat = Serializable::FORMAT_JSON);
+        $instance = new self($dataFormat);
 
         return $instance;
     }
@@ -50,7 +51,7 @@ class Serializer implements Serializable
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function deserialize($data, $dataFormat = Serializable::FORMAT_JSON)
     {
@@ -68,9 +69,7 @@ class Serializer implements Serializable
     }
 
     /**
-     * @param object $data
-     * @param int $dataFormat
-     * @return mixed
+     * @inheritdoc
      */
     public function serialize($data, $dataFormat = Serializable::FORMAT_JSON)
     {
@@ -92,6 +91,7 @@ class Serializer implements Serializable
      * @param array $data
      * @return mixed
      * @throws \Exception
+     * @todo refactor this out somewhere once we start implementing in new formats
      */
     protected function arrayToObject(array $data)
     {
@@ -112,6 +112,7 @@ class Serializer implements Serializable
      * @param mixed $object
      * @return mixed
      * @throws \Exception
+     * @todo refactor this out somewhere once we start implementing in new formats
      */
     protected function extractAndSetSingleDepthProperties(
         array $data,
@@ -145,6 +146,7 @@ class Serializer implements Serializable
      * @param mixed $object
      * @return mixed
      * @throws \Exception
+     * @todo refactor this out somewhere once we start implementing in new formats
      */
     protected function extractAndSetMultipleDepthProperties(
         array& $breadth,
@@ -178,6 +180,7 @@ class Serializer implements Serializable
      * @param mixed $baseObject
      * @param bool  $exposeClassname
      * @return array
+     * @todo refactor this out somewhere once we start implementing in new formats
      */
     protected function objectToArray($baseObject, $exposeClassname = true)
     {
@@ -196,7 +199,7 @@ class Serializer implements Serializable
                 $data['className'] = get_class($baseObject);
             }
         }
-        
+
         return $data;
     }
 
@@ -204,6 +207,7 @@ class Serializer implements Serializable
      * @param string  $variableName
      * @param string  $containingClass
      * @return string
+     * @todo refactor this out somewhere once we start implementing in new formats
      */
     protected function cleanVariableName($variableName, $containingClass)
     {

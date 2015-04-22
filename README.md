@@ -10,7 +10,15 @@ Currently will only support json and do a full depth/breadth recursion, we'll bu
 
 Example
 ```php
-    
+   
+   //To retrieve json of an object
+   
+   $jsonData = BDBStudios\BreakfastSerializer\Serializer::getSerializer()->serialize($myClass);
+   
+   
+   //To unserialize
+   
+   $myUnserializedObject = BDBStudios\BreakfastSerializer\Serializer::getSerializer()->deserialize($jsonData);
     
 ```
 

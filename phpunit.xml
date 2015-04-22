@@ -18,6 +18,10 @@
         </testsuite>
     </testsuites>
 
+    <whitelist addUncoveredFilesFromWhitelist="true">
+        <directory suffix=".php">./src</directory>
+    </whitelist>
+
     <groups>
         <exclude>
             <group>performance</group>

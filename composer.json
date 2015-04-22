@@ -1,7 +1,7 @@
 {
     "name": "brettminnie/breakfast-serializer",
     "type": "library",
-    "description": "Library for (de-)serializing data of any complexity; supports XML, JSON, and YAML. Replacement with hopeful backwards compatibility with JMS",
+    "description": "Library for (de-)serializing data of any complexity to JSON",
     "keywords": ["serialization", "deserialization", "json", "jaxb", "xml"],
     "license": "MIT",
     "authors": [
@@ -16,12 +16,12 @@
     "minimum-stability": "dev",
     "require-dev": {
         "phpunit/phpunit": "~4.0",
-        "mockery/mockery": "0.9.*@dev",
-        "doctrine/common": "2.6.*@dev"
+        "mockery/mockery": "0.9.*@dev"
     },
     "autoload": {
-        "psr-0": {
-            "BDBStudios\\BreakfastSerializer": "src/"
+        "psr-4": {
+            "BDBStudios\\BreakfastSerializer\\": "src/BreakfastSerializer/",
+            "BDBStudios\\BreakfastSerializerTest\\": "test/BreakfastSerializer/"
         }
     }
 }

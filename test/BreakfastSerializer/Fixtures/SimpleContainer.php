@@ -1,6 +1,6 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializerTests\Fixtures;
+namespace BDBStudios\BreakfastSerializerTest\Fixtures;
 
 /**
  * Class SimpleContainer

@@ -6,6 +6,4 @@ call_user_func(function() {
     }
 
     $loader = require $autoloadFile;
-    $loader->add('BDBStudios\BreakfastSerializerTests', __DIR__);
-    $loader->add('BDBStudios\BreakfastSerializerTests\Fixtures', __DIR__ . '/Fixtures');
 });

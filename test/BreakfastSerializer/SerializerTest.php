@@ -2,6 +2,9 @@
 
 namespace BDBStudios\BreakfastSerializerTests;
 
+include 'test/BreakfastSerializer/Fixtures/SimpleClass.php';
+include 'test/BreakfastSerializer/Fixtures/SimpleContainer.php';
+
 use BDBStudios\BreakfastSerializer\Serializer;
 use BDBStudios\BreakfastSerializerTests\Fixtures\SimpleClass;
 use BDBStudios\BreakfastSerializerTests\Fixtures\SimpleContainer;

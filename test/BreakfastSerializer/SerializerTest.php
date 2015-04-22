@@ -1,59 +1,10 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer\Tests;
+namespace BDBStudios\BreakfastSerializerTests;
 
 use BDBStudios\BreakfastSerializer\Serializer;
-
-class Foo {
-    protected $var1 = true;
-    protected $var2 = 'foo';
-    protected $uid;
-
-    public function __construct()
-    {
-        $this->uid = uniqid();
-    }
-}
-
-class SimpleContainer {
-
-    const INTERNAL_VALUE = PHP_INT_MAX;
-
-    private $exposeMe;
-
-    protected $name;
-
-    protected $simpleArray;
-
-    protected $uid;
-
-    public function __construct()
-    {
-        $this->name = 'SimpleContainer Instance';
-
-        $this->uid = uniqid();
-
-        $this->exposeMe = true;
-
-        $this->simpleArray = array();
-        $this->simpleArray[] = new Simple();
-        $this->simpleArray[] = new Simple();
-    }
-}
-
-class Simple {
-    protected $name;
-
-    protected $uid;
-
-    const FOO = 'Bar';
-
-    public function __construct()
-    {
-        $this->name = 'SimpleClass Instance';
-        $this->uid = uniqid();
-    }
-}
+use BDBStudios\BreakfastSerializerTests\Fixtures\SimpleClass;
+use BDBStudios\BreakfastSerializerTests\Fixtures\SimpleContainer;
 
 class SerializerTest extends \PHPUnit_Framework_TestCase
 {
@@ -75,7 +26,7 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
 
     public function testSerializeSimpleClass()
     {
-        $testInstance = new Simple();
+        $testInstance = new SimpleClass();
 
         $data = $this->instance->serialize($testInstance);
         $this->assertTrue(is_string($data));
@@ -119,7 +70,7 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeserialize()
     {
-        $test = new Simple();
+        $test = new SimpleClass();
         $data = $this->instance->serialize($test);
 
         $deserializedObject = $this->instance->deserialize($data);

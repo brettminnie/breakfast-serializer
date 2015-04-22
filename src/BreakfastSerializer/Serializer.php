@@ -89,12 +89,31 @@ class Serializer implements Serializable
      */
     protected function arrayToObject(array $data)
     {
-        $object = new $data['className']();
-
+        $object     = new $data['className']();
         $reflection = new \ReflectionClass($data['className']);
+        $breadth    = array();
 
-        $breadth = array();
+        $object = $this->extractAndSetSingleDepthProperties($data, $breadth, $reflection, $object);
+        $object = $this->extractAndSetMultipleDepthProperties($breadth, $reflection, $object);
 
+        return $object;
+    }
+
+    /**
+     * @param array $data
+     * @param array $breadth
+     * @param \ReflectionClass $reflection
+     * @param $object
+     * @return $object
+     * @throws \Exception
+     */
+    protected function extractAndSetSingleDepthProperties(
+        array $data,
+        array& $breadth,
+        \ReflectionClass& $reflection,
+        $object
+    )
+    {
         foreach($data as $key=>$value) {
             if (true === is_array($value)) {
                 $breadth[$key] = $value;
@@ -111,6 +130,24 @@ class Serializer implements Serializable
             }
         }
 
+        return $object;
+    }
+
+    /**
+     * @param array $breadth
+     * @param \ReflectionClass $reflection
+     * @param $object
+     * @return $object
+     * @throws \Exception
+     */
+    protected function extractAndSetMultipleDepthProperties(
+        array& $breadth,
+        \ReflectionClass& $reflection,
+        $object
+    )
+    {
+        $propertyData = array();
+        
         foreach($breadth as $key => $value) {
             if(true === is_array($value)) {
                 foreach ($value as $instance) {
@@ -133,6 +170,7 @@ class Serializer implements Serializable
 
         return $object;
     }
+
 
     /**
      * @param      $baseObject

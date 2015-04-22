@@ -38,8 +38,8 @@ class SimpleContainer
         $this->exposeMe = true;
 
         $this->simpleArray = array();
-        $this->simpleArray[] = new Simple();
-        $this->simpleArray[] = new Simple();
+        $this->simpleArray[] = new SimpleClass();
+        $this->simpleArray[] = new SimpleClass();
     }
 }
 

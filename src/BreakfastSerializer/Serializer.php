@@ -51,12 +51,11 @@ class Serializer implements Serializable
         }
 
         switch ($dataFormat) {
-            case Serializable::FORMAT_JSON :
+            case Serializable::FORMAT_JSON:
                 $data = json_decode($data, true);
                 return $this->arrayToObject(
                     $data
                 );
-                break;
         }
     }
 
@@ -72,13 +71,12 @@ class Serializer implements Serializable
         }
 
         switch ($dataFormat) {
-            case Serializable::FORMAT_JSON :
+            case Serializable::FORMAT_JSON:
                 return json_encode(
                     $this->objectToArray(
                         $data
                     )
                 );
-                break;
         }
     }
 
@@ -103,8 +101,8 @@ class Serializer implements Serializable
      * @param array $data
      * @param array $breadth
      * @param \ReflectionClass $reflection
-     * @param $object
-     * @return $object
+     * @param mixed $object
+     * @return mixed
      * @throws \Exception
      */
     protected function extractAndSetSingleDepthProperties(
@@ -136,8 +134,8 @@ class Serializer implements Serializable
     /**
      * @param array $breadth
      * @param \ReflectionClass $reflection
-     * @param $object
-     * @return $object
+     * @param mixed $object
+     * @return mixed
      * @throws \Exception
      */
     protected function extractAndSetMultipleDepthProperties(
@@ -149,12 +147,8 @@ class Serializer implements Serializable
         $propertyData = array();
         
         foreach($breadth as $key => $value) {
-            if(true === is_array($value)) {
-                foreach ($value as $instance) {
-                    $propertyData[] = $this->arrayToObject($instance);
-                }
-            } else {
-                $propertyData = $this->arrayToObject($value);
+            foreach ($value as $instance) {
+                $propertyData[] = $this->arrayToObject($instance);
             }
 
             try {
@@ -173,8 +167,8 @@ class Serializer implements Serializable
 
 
     /**
-     * @param      $baseObject
-     * @param bool $exposeClassname
+     * @param mixed $baseObject
+     * @param bool  $exposeClassname
      * @return array
      */
     protected function objectToArray($baseObject, $exposeClassname = true)
@@ -203,7 +197,7 @@ class Serializer implements Serializable
      */
     protected function cleanVariableName($variableName, $containingClass)
     {
-        $cleanedName = $className = '';
+        $className = '';
 
         if (true === is_object($containingClass)) {
             $className = get_class($containingClass);

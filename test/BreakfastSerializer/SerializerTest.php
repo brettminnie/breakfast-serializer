@@ -119,6 +119,16 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
 
     public function testDeserialize()
     {
+        $test = new Simple();
+        $data = $this->instance->serialize($test);
+
+        $deserializedObject = $this->instance->deserialize($data);
+
+        $this->assertEquals($test, $deserializedObject);
+    }
+
+    public function testComplexDeserialize()
+    {
         $test = new SimpleContainer();
         $data = $this->instance->serialize($test);
 

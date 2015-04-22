@@ -114,16 +114,16 @@ class Serializer implements Serializable
         foreach($breadth as $key => $value) {
             if(true === is_array($value)) {
                 foreach ($value as $instance) {
-                    $object = $this->arrayToObject($instance);
+                    $propertyData[] = $this->arrayToObject($instance);
                 }
             } else {
-                $object = $this->arrayToObject($value);
+                $propertyData = $this->arrayToObject($value);
             }
 
             try {
                 $property = $reflection->getProperty($key);
                 $property->setAccessible(true);
-                $property->setValue($object, $value);
+                $property->setValue($object, $propertyData);
             } catch (\ReflectionException $e) {
                 //Non property so we ignore this
             } catch (\Exception $e) {

@@ -42,6 +42,14 @@ class Serializer implements Serializable
     }
 
     /**
+     * @inheritdoc
+     */
+    public static function isIterable($object)
+    {
+        return (is_array($object) || $object instanceof \Traversable);
+    }
+
+    /**
      * @inheritDoc
      */
     public function deserialize($data, $dataFormat = Serializable::FORMAT_JSON)
@@ -177,16 +185,18 @@ class Serializer implements Serializable
 
         $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
 
-        foreach ($objAsArray as $key => $val) {
-            $val        =
-                (is_array($val) || is_object($val)) ? $this->objectToArray($val, $exposeClassname) : $val;
-            $data[$this->cleanVariableName($key, $baseObject)] = $val;
-        }
+        if (true === self::isIterable($objAsArray)) {
+            foreach ($objAsArray as $key => $val) {
+                $val =
+                    (is_array($val) || is_object($val)) ? $this->objectToArray($val, $exposeClassname) : $val;
+                $data[$this->cleanVariableName($key, $baseObject)] = $val;
+            }
 
-        if (true === $exposeClassname && is_object($baseObject)) {
-            $data['className'] = get_class($baseObject);
+            if (true === $exposeClassname && is_object($baseObject)) {
+                $data['className'] = get_class($baseObject);
+            }
         }
-
+        
         return $data;
     }
 

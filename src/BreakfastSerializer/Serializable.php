@@ -32,4 +32,11 @@ interface Serializable
      * @return object
      */
     public function deserialize($data, $dataFormat = Serializable::FORMAT_JSON);
+
+    /**
+     * Tests to see if the object is an array or implements Traversable
+     * @param mixed $object
+     * @return boolean
+     */
+    public static function isIterable($object);
 }

@@ -22,7 +22,6 @@ class SerializerFactory
     {
         if (null === self::$serializerInstance) {
             $instance = null;
-
             switch ($dataFormat) {
                 case IsSerializable::FORMAT_JSON:
                     $instance = new JSONSerializer();

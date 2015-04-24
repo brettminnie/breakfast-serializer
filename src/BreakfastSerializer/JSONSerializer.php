@@ -139,8 +139,10 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
 
         if (true === SerializerFactory::canIterate($objAsArray)) {
             foreach ($objAsArray as $key => $val) {
-                $val =
-                    (is_array($val) || is_object($val)) ? $this->objectToArray($val, $exposeClassName) : $val;
+                if (true === is_array($val) || true === is_object($val)) {
+                    $val = $this->objectToArray($val, $exposeClassName);
+                }
+
                 $data[$this->cleanVariableName($key, $baseObject)] = $val;
             }
 

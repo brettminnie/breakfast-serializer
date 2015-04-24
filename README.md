@@ -12,13 +12,19 @@ Example
 ```php
    
    //To retrieve json of an object
-   
    $jsonData = BDBStudios\BreakfastSerializer\SerializerFactory::getSerializer()->serialize($myClass);
    
    
    //To unserialize
-   
    $myUnserializedObject = BDBStudios\BreakfastSerializer\SerializerFactory:::getSerializer()->deserialize($jsonData);
+   
+   //To serialize an object with a limited depth recursion
+   $jsonData = 
+      BDBStudios\BreakfastSerializer\SerializerFactory::getSerializer(
+         IsSerializable::FORMAT_JSON,
+         2
+      )
+      ->serialize($myClass);
     
 ```
 

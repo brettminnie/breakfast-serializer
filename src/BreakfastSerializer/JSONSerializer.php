@@ -9,9 +9,12 @@ namespace BDBStudios\BreakfastSerializer;
 class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraversable
 {
 
-    public function __construct()
+    /**
+     * @param int $maxDepth
+     */
+    public function __construct($maxDepth = self::MAX_DEPTH_NOT_SET)
     {
-        parent::__construct(self::FORMAT_JSON);
+        parent::__construct(self::FORMAT_JSON, $maxDepth);
     }
 
     /**

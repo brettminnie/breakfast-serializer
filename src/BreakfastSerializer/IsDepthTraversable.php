@@ -19,4 +19,30 @@ interface IsDepthTraversable
      * @return int
      */
     public function getDepth();
+
+    /**
+     * @return IsSerializable
+     */
+    public function incrementCurrentDepth();
+
+    /**
+     * @return IsSerializable
+     */
+    public function decrementCurrentDepth();
+
+    /**
+     * @return boolean
+     */
+    public function isWithinBounds();
+
+    /**
+     * @return IsSerializable
+     */
+    public function resetCurrentDepth();
+
+    /**
+     * @return int
+     */
+    public function getCurrentDepth();
+
 }

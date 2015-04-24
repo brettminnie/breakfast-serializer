@@ -10,7 +10,7 @@ interface IsDepthTraversable
 {
     /**
      * @param int $depth
-     * @return \Serializable
+     * @return IsSerializable
      * @throws \LogicException
      */
     public function setDepth($depth);

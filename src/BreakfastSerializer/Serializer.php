@@ -28,6 +28,7 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable
     )
     {
         $this->format = $dataFormat;
+        $this->maxDepth = $maxDepth;
     }
 
     /**

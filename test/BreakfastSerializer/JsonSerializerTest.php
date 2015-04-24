@@ -2,7 +2,8 @@
 
 namespace BDBStudios\BreakfastSerializerTests;
 
-use BDBStudios\BreakfastSerializer\Serializer;
+use BDBStudios\BreakfastSerializer\JSONSerializer;
+use BDBStudios\BreakfastSerializer\SerializerFactory;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleClass;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleContainer;
 
@@ -10,29 +11,29 @@ use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleContainer;
  * Class SerializerTest
  * @package BDBStudios\BreakfastSerializerTests
  */
-class SerializerTest extends \PHPUnit_Framework_TestCase
+class JsonSerializerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Serializer
+     * @var JSONSerializer
      */
-    protected $instance;
+    protected static $instance;
 
     public function setUp()
     {
-        $this->instance = Serializer::getSerializer();
+        self::$instance = SerializerFactory::getSerializer();
     }
 
     public function testSetUp()
     {
-        $this->assertTrue($this->instance instanceof Serializer);
-        $this->assertEquals(Serializer::FORMAT_JSON, $this->instance->getFormat());
+        $this->assertTrue(self::$instance instanceof JSONSerializer);
+        $this->assertEquals(JSONSerializer::FORMAT_JSON, self::$instance->getFormat());
     }
 
     public function testSerializeSimpleClass()
     {
         $testInstance = new SimpleClass();
 
-        $data = $this->instance->serialize($testInstance);
+        $data = self::$instance->serialize($testInstance);
         $this->assertTrue(is_string($data));
 
         $data = json_decode($data, true);
@@ -46,7 +47,7 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
     public function testSerializeSimpleContainer()
     {
         $test = new SimpleContainer();
-        $data = $this->instance->serialize($test);
+        $data = self::$instance->serialize($test);
 
         $this->assertTrue(is_string($data));
         $decodedData = json_decode($data, true);
@@ -62,22 +63,12 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(array_key_exists('className', $decodedData['simpleArray'][0]));
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Currently only JSON is supported
-     */
-    public function testSerializeUnsupportedFormatThrowsException()
-    {
-        $object = new \stdClass();
-        $this->instance->serialize($object, Serializer::FORMAT_PHP);
-    }
-
     public function testDeserialize()
     {
         $test = new SimpleClass();
-        $data = $this->instance->serialize($test);
+        $data = self::$instance->serialize($test);
 
-        $deserializedObject = $this->instance->deserialize($data);
+        $deserializedObject = self::$instance->deserialize($data);
 
         $this->assertEquals($test, $deserializedObject);
     }
@@ -85,9 +76,9 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
     public function testComplexDeserialize()
     {
         $test = new SimpleContainer();
-        $data = $this->instance->serialize($test);
+        $data = self::$instance->serialize($test);
 
-        $deserializedObject = $this->instance->deserialize($data);
+        $deserializedObject = self::$instance->deserialize($data);
 
         $this->assertEquals($test, $deserializedObject);
     }

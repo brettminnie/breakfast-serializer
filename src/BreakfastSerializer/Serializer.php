@@ -4,11 +4,14 @@ namespace BDBStudios\BreakfastSerializer;
 
 /**
  * Class Serializer
- * @package BDBStudios
- * @todo This will become a factory for each of the formats
+ * @package BDBStudios\BreakfastSerializer
  */
-class Serializer implements Serializable
+abstract class Serializer implements IsSerializable, IsDepthTraversable
 {
+    /**
+     * @var int
+     */
+    protected $maxDepth;
 
     /**
      * @var int
@@ -17,8 +20,12 @@ class Serializer implements Serializable
 
     /**
      * @param int $dataFormat
+     * @param int $maxDepth
      */
-    protected function __construct($dataFormat = Serializer::FORMAT_XML)
+    public function __construct(
+        $dataFormat = Serializer::FORMAT_XML,
+        $maxDepth = Serializer::MAX_DEPTH_NOT_SET
+    )
     {
         $this->format = $dataFormat;
     }
@@ -32,180 +39,39 @@ class Serializer implements Serializable
     }
 
     /**
-     * @param int $dataFormat
-     * @return Serializer
+     * @inheritdoc
      */
-    public static function getSerializer($dataFormat = Serializable::FORMAT_JSON)
+    public function setDepth($maxDepth)
     {
-        $instance = new self($dataFormat);
+        if (false === is_int($maxDepth)) {
+            throw new \LogicException(__CLASS__.'::'.__FUNCTION__.' expects an int but a '.gettype($maxDepth).' was supplied');
+        }
+        $this->maxDepth = $maxDepth;
 
-        return $instance;
+        return $this;
     }
 
     /**
      * @inheritdoc
      */
-    public static function isIterable($object)
+    public function getDepth()
     {
-        return (is_array($object) || $object instanceof \Traversable);
+        return $this->maxDepth;
     }
 
     /**
      * @inheritdoc
      */
-    public function deserialize($data, $dataFormat = Serializable::FORMAT_JSON)
-    {
-        if (Serializable::FORMAT_JSON !== $dataFormat) {
-            throw new \LogicException('Currently only JSON is supported');
-        }
-
-        switch ($dataFormat) {
-            case Serializable::FORMAT_JSON:
-                $data = json_decode($data, true);
-                return $this->arrayToObject(
-                    $data
-                );
-        }
-    }
+    abstract public function deserialize($data);
 
     /**
      * @inheritdoc
      */
-    public function serialize($data, $dataFormat = Serializable::FORMAT_JSON)
-    {
-        if (Serializable::FORMAT_JSON !== $dataFormat) {
-            throw new \LogicException('Currently only JSON is supported');
-        }
-
-        switch ($dataFormat) {
-            case Serializable::FORMAT_JSON:
-                return json_encode(
-                    $this->objectToArray(
-                        $data
-                    )
-                );
-        }
-    }
-
-    /**
-     * @param array $data
-     * @return mixed
-     * @throws \Exception
-     * @todo refactor this out somewhere once we start implementing in new formats
-     */
-    protected function arrayToObject(array $data)
-    {
-        $object     = new $data['className']();
-        $reflection = new \ReflectionClass($data['className']);
-        $breadth    = array();
-
-        $object = $this->extractAndSetSingleDepthProperties($data, $breadth, $reflection, $object);
-        $object = $this->extractAndSetMultipleDepthProperties($breadth, $reflection, $object);
-
-        return $object;
-    }
-
-    /**
-     * @param array $data
-     * @param array $breadth
-     * @param \ReflectionClass $reflection
-     * @param mixed $object
-     * @return mixed
-     * @throws \Exception
-     * @todo refactor this out somewhere once we start implementing in new formats
-     */
-    protected function extractAndSetSingleDepthProperties(
-        array $data,
-        array& $breadth,
-        \ReflectionClass& $reflection,
-        $object
-    )
-    {
-        foreach($data as $key=>$value) {
-            if (true === is_array($value)) {
-                $breadth[$key] = $value;
-            } else {
-                try {
-                    $property = $reflection->getProperty($key);
-                    $property->setAccessible(true);
-                    $property->setValue($object, $value);
-                } catch (\ReflectionException $e) {
-                    //Non property so we ignore this
-                } catch (\Exception $e) {
-                    throw $e;
-                }
-            }
-        }
-
-        return $object;
-    }
-
-    /**
-     * @param array $breadth
-     * @param \ReflectionClass $reflection
-     * @param mixed $object
-     * @return mixed
-     * @throws \Exception
-     * @todo refactor this out somewhere once we start implementing in new formats
-     */
-    protected function extractAndSetMultipleDepthProperties(
-        array& $breadth,
-        \ReflectionClass& $reflection,
-        $object
-    )
-    {
-        $propertyData = array();
-        
-        foreach($breadth as $key => $value) {
-            foreach ($value as $instance) {
-                $propertyData[] = $this->arrayToObject($instance);
-            }
-
-            try {
-                $property = $reflection->getProperty($key);
-                $property->setAccessible(true);
-                $property->setValue($object, $propertyData);
-            } catch (\ReflectionException $e) {
-                //Non property so we ignore this
-            } catch (\Exception $e) {
-                throw $e;
-            }
-        }
-
-        return $object;
-    }
-
-
-    /**
-     * @param mixed $baseObject
-     * @param bool  $exposeClassname
-     * @return array
-     * @todo refactor this out somewhere once we start implementing in new formats
-     */
-    protected function objectToArray($baseObject, $exposeClassname = true)
-    {
-        $data = array();
-
-        $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
-
-        if (true === self::isIterable($objAsArray)) {
-            foreach ($objAsArray as $key => $val) {
-                $val =
-                    (is_array($val) || is_object($val)) ? $this->objectToArray($val, $exposeClassname) : $val;
-                $data[$this->cleanVariableName($key, $baseObject)] = $val;
-            }
-
-            if (true === $exposeClassname && is_object($baseObject)) {
-                $data['className'] = get_class($baseObject);
-            }
-        }
-
-        return $data;
-    }
+    abstract public function serialize($data);
 
     /**
      * @param string  $variableName
-     * @param string  $containingClass
+     * @param mixed   $containingClass
      * @return string
      * @todo refactor this out somewhere once we start implementing in new formats
      */

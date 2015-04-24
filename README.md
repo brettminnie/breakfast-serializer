@@ -13,12 +13,12 @@ Example
    
    //To retrieve json of an object
    
-   $jsonData = BDBStudios\BreakfastSerializer\Serializer::getSerializer()->serialize($myClass);
+   $jsonData = BDBStudios\BreakfastSerializer\SerializerFactory::getSerializer()->serialize($myClass);
    
    
    //To unserialize
    
-   $myUnserializedObject = BDBStudios\BreakfastSerializer\Serializer::getSerializer()->deserialize($jsonData);
+   $myUnserializedObject = BDBStudios\BreakfastSerializer\SerializerFactory:::getSerializer()->deserialize($jsonData);
     
 ```
 

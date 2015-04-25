@@ -36,10 +36,22 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \LogicException
+     * @expectedExceptionMessage BDBStudios\BreakfastSerializer\Serializer::setDepth expects an int but a string was supplied
      */
     public function testGetSetDepthThrowsExceptionWithString()
     {
         $expected = 'five';
+        $this->assertEquals(Serializer::MAX_DEPTH_NOT_SET, $this->instance->getDepth());
+        $this->assertTrue($this->instance->setDepth($expected) instanceof Serializer);
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage The maximum depth should be non zero, non negative
+     */
+    public function testSettingDepthToZeroThrowsException()
+    {
+        $expected = 0;
         $this->assertEquals(Serializer::MAX_DEPTH_NOT_SET, $this->instance->getDepth());
         $this->assertTrue($this->instance->setDepth($expected) instanceof Serializer);
     }

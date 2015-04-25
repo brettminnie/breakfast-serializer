@@ -51,9 +51,14 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable
      */
     public function setDepth($maxDepth)
     {
-        if (false === is_int($maxDepth)) {
-            throw new \LogicException(__CLASS__.'::'.__FUNCTION__.' expects an int but a '.gettype($maxDepth).' was supplied');
+        if ($maxDepth !== self::MAX_DEPTH_NOT_SET) {
+            if (false === is_int($maxDepth)) {
+                throw new \LogicException(__CLASS__ . '::' . __FUNCTION__ . ' expects an int but a ' . gettype($maxDepth) . ' was supplied');
+            } elseif ($maxDepth <= 0) {
+                throw new \LogicException('The maximum depth should be non zero, non negative');
+            }
         }
+
         $this->maxDepth = $maxDepth;
 
         return $this;

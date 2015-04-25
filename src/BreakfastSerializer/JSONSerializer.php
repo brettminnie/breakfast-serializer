@@ -136,23 +136,31 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
      */
     protected function objectToArray($baseObject, $exposeClassName = true)
     {
+
         $data = array();
 
-        $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
+        if ($this->isWithinBounds()) {
+            $this->incrementCurrentDepth();
 
-        if (true === SerializerFactory::canIterate($objAsArray)) {
-            foreach ($objAsArray as $key => $val) {
-                if (true === is_array($val) || true === is_object($val)) {
-                    $val = $this->objectToArray($val, $exposeClassName);
+            $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
+
+            if (true === SerializerFactory::canIterate($objAsArray)) {
+                foreach ($objAsArray as $key => $val) {
+                    if (true === is_array($val) || true === is_object($val)) {
+                        $val = $this->objectToArray($val, $exposeClassName);
+                    }
+
+                    $data[$this->cleanVariableName($key, $baseObject)] = $val;
                 }
 
-                $data[$this->cleanVariableName($key, $baseObject)] = $val;
+                if (true === $exposeClassName && is_object($baseObject)) {
+                    $data['className'] = get_class($baseObject);
+                }
             }
 
-            if (true === $exposeClassName && is_object($baseObject)) {
-                $data['className'] = get_class($baseObject);
-            }
+            $this->decrementCurrentDepth();
         }
+
 
         return $data;
     }

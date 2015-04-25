@@ -2,6 +2,7 @@
 
 namespace BDBStudios\BreakfastSerializerTests;
 
+use BDBStudios\BreakfastSerializer\IsSerializable;
 use BDBStudios\BreakfastSerializer\JSONSerializer;
 use BDBStudios\BreakfastSerializer\SerializerFactory;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleClass;
@@ -81,5 +82,22 @@ class JsonSerializerTest extends \PHPUnit_Framework_TestCase
         $deserializedObject = self::$instance->deserialize($data);
 
         $this->assertEquals($test, $deserializedObject);
+    }
+
+    public function testComplexSerializeLimitedToDepthOfOne()
+    {
+        $test = new SimpleContainer();
+
+        self::$instance->setDepth(1);
+        $data = self::$instance->serialize($test);
+        $data = json_decode($data, true);
+        $this->assertEmpty($data['simpleArray']);
+
+        self::$instance->setDepth(IsSerializable::MAX_DEPTH_NOT_SET);
+        $data = self::$instance->serialize($test);
+        $data = json_decode($data, true);
+        $this->assertNotEmpty($data['simpleArray']);
+
+
     }
 }

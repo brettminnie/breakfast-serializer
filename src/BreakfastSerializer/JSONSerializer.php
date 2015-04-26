@@ -9,9 +9,12 @@ namespace BDBStudios\BreakfastSerializer;
 class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraversable
 {
 
-    public function __construct()
+    /**
+     * @param int $maxDepth
+     */
+    public function __construct($maxDepth = self::MAX_DEPTH_NOT_SET)
     {
-        parent::__construct(self::FORMAT_JSON);
+        parent::__construct(self::FORMAT_JSON, $maxDepth);
     }
 
     /**
@@ -133,23 +136,31 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
      */
     protected function objectToArray($baseObject, $exposeClassName = true)
     {
+
         $data = array();
 
-        $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
+        if ($this->isWithinBounds()) {
+            $this->incrementCurrentDepth();
 
-        if (true === SerializerFactory::canIterate($objAsArray)) {
-            foreach ($objAsArray as $key => $val) {
-                if (true === is_array($val) || true === is_object($val)) {
-                    $val = $this->objectToArray($val, $exposeClassName);
+            $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
+
+            if (true === SerializerFactory::canIterate($objAsArray)) {
+                foreach ($objAsArray as $key => $val) {
+                    if (true === is_array($val) || true === is_object($val)) {
+                        $val = $this->objectToArray($val, $exposeClassName);
+                    }
+
+                    $data[$this->cleanVariableName($key, $baseObject)] = $val;
                 }
 
-                $data[$this->cleanVariableName($key, $baseObject)] = $val;
+                if (true === $exposeClassName && is_object($baseObject)) {
+                    $data['className'] = get_class($baseObject);
+                }
             }
 
-            if (true === $exposeClassName && is_object($baseObject)) {
-                $data['className'] = get_class($baseObject);
-            }
+            $this->decrementCurrentDepth();
         }
+
 
         return $data;
     }

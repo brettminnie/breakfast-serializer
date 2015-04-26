@@ -16,15 +16,18 @@ class SerializerFactory
     /**
      * Builds an instance of a serializer if the internal instance is null
      * @param int $dataFormat
+     * @param int $maxDepth
      * @return Serializer
      */
-    public static function getSerializer($dataFormat = IsSerializable::FORMAT_JSON)
+    public static function getSerializer(
+        $dataFormat = IsSerializable::FORMAT_JSON,
+        $maxDepth = IsSerializable::MAX_DEPTH_NOT_SET
+    )
     {
         if (null === self::$serializerInstance) {
-            $instance = null;
             switch ($dataFormat) {
                 case IsSerializable::FORMAT_JSON:
-                    $instance = new JSONSerializer();
+                    $instance = new JSONSerializer($maxDepth);
                     break;
                 default:
                     throw new \LogicException('An unsupported serializer type was requested');

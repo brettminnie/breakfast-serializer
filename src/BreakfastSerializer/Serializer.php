@@ -16,6 +16,11 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable
     /**
      * @var int
      */
+    protected $currentDepth;
+
+    /**
+     * @var int
+     */
     protected $format;
 
     /**
@@ -29,6 +34,8 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable
     {
         $this->format = $dataFormat;
         $this->maxDepth = $maxDepth;
+
+        $this->currentDepth = 1;
     }
 
     /**
@@ -44,9 +51,14 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable
      */
     public function setDepth($maxDepth)
     {
-        if (false === is_int($maxDepth)) {
-            throw new \LogicException(__CLASS__.'::'.__FUNCTION__.' expects an int but a '.gettype($maxDepth).' was supplied');
+        if ($maxDepth !== self::MAX_DEPTH_NOT_SET) {
+            if (false === is_int($maxDepth)) {
+                throw new \LogicException(__CLASS__ . '::' . __FUNCTION__ . ' expects an int but a ' . gettype($maxDepth) . ' was supplied');
+            } elseif ($maxDepth <= 0) {
+                throw new \LogicException('The maximum depth should be non zero, non negative');
+            }
         }
+
         $this->maxDepth = $maxDepth;
 
         return $this;
@@ -58,6 +70,55 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable
     public function getDepth()
     {
         return $this->maxDepth;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function incrementCurrentDepth()
+    {
+        $this->currentDepth++;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function decrementCurrentDepth()
+    {
+        $this->currentDepth =
+            (1 <= $this->currentDepth) ? 1 : $this->currentDepth = 1;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCurrentDepth()
+    {
+        return $this->currentDepth;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function resetCurrentDepth()
+    {
+        $this->currentDepth = 1;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isWithinBounds()
+    {
+        $isValid = (self::MAX_DEPTH_NOT_SET === $this->maxDepth)
+            ? true : ($this->currentDepth <= $this->maxDepth)
+                ? true : false;
+
+        return $isValid;
     }
 
     /**

@@ -1,0 +1,3 @@
+className: "BDBStudios\BreakfastSerializerTest\Fixtures\ExclusionClass"
+  properties :
+    exclude: ['internalProperty', 'isExcluded']

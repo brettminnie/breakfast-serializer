@@ -6,8 +6,10 @@ namespace BDBStudios\BreakfastSerializer;
  * Class Serializer
  * @package BDBStudios\BreakfastSerializer
  */
-abstract class Serializer implements IsSerializable, IsDepthTraversable
+abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable
 {
+    use ConfigurableProperty;
+
     /**
      * @var int
      */
@@ -24,16 +26,19 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable
     protected $format;
 
     /**
-     * @param int $dataFormat
-     * @param int $maxDepth
+     * @param int    $dataFormat
+     * @param int    $maxDepth
+     * @param string $configurationPath
      */
     public function __construct(
         $dataFormat = Serializer::FORMAT_XML,
-        $maxDepth = Serializer::MAX_DEPTH_NOT_SET
+        $maxDepth = Serializer::MAX_DEPTH_NOT_SET,
+        $configurationPath = ''
     )
     {
         $this->format = $dataFormat;
         $this->maxDepth = $maxDepth;
+        $this->configurationPath = $configurationPath;
 
         $this->currentDepth = 1;
     }

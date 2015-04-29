@@ -14,9 +14,15 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateJsonSerializer()
     {
-        $this->instance = SerializerFactory::getSerializer();
+        $this->instance = SerializerFactory::getSerializer(
+            Serializer::FORMAT_JSON,
+            Serializer::MAX_DEPTH_NOT_SET,
+            'test/config/exclusions'
+        );
 
         $this->assertTrue($this->instance instanceof JSONSerializer);
+
+        var_dump($this->instance->getConfiguration());
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace BDBStudios\BreakfastSerializer;
 
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -20,12 +21,6 @@ trait ConfigurableProperty
      * @var array
      */
     protected static $configurationData;
-
-    public function __construct()
-    {
-        self::$configurationData = array();
-        $this->configurationPath = '';
-    }
 
     /**
      * @param string $pathName
@@ -52,16 +47,43 @@ trait ConfigurableProperty
      */
     public function getConfiguration($configurationKey = null)
     {
+        if (empty(self::$configurationData)) {
+            $this->loadConfiguration();
+        }
+
         return (true === is_null($configurationKey)) ?
             self::$configurationData : self::$configurationData[$configurationKey];
     }
 
     /**
-     * @return boolean
+     * @return IsConfigurable
+     * @throws \LogicException
+     * @throws ParseException
      */
     protected function loadConfiguration()
     {
-        $this->configurationPathIsValid();
+        if (false === $this->configurationPathIsValid()) {
+            throw new \LogicException('The path to the configuration file is invalid');
+        }
+
+        self::$configurationData = array();
+        $iterator = new \DirectoryIterator($this->configurationPath);
+
+        foreach ($iterator as $file) {
+            if (false === $file->isDot()) {
+                self::$configurationData =
+                    array_merge(
+                        self::$configurationData,
+                        Yaml::parse(
+                            file_get_contents(
+                                $file->getRealPath()
+                            )
+                        )
+                    );
+            }
+        }
+
+        return $this;
     }
 
     /**

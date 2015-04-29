@@ -10,11 +10,15 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
 {
 
     /**
-     * @param int $maxDepth
+     * @param int    $maxDepth
+     * @param string $configurationPath
      */
-    public function __construct($maxDepth = self::MAX_DEPTH_NOT_SET)
+    public function __construct(
+        $maxDepth = self::MAX_DEPTH_NOT_SET,
+        $configurationPath = ''
+    )
     {
-        parent::__construct(self::FORMAT_JSON, $maxDepth);
+        parent::__construct(self::FORMAT_JSON, $maxDepth, $configurationPath);
     }
 
     /**

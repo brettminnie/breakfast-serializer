@@ -21,8 +21,6 @@ class SerializerFactoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertTrue($this->instance instanceof JSONSerializer);
-
-        var_dump($this->instance->getConfiguration());
     }
 
     /**

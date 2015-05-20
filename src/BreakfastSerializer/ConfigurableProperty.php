@@ -52,7 +52,8 @@ trait ConfigurableProperty
         }
 
         return (true === is_null($configurationKey)) ?
-            self::$configurationData : self::$configurationData[$configurationKey];
+            self::$configurationData :
+            self::$configurationData[$configurationKey];
     }
 
     /**

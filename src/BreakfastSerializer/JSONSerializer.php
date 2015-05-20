@@ -6,7 +6,7 @@ namespace BDBStudios\BreakfastSerializer;
  * Class JSONSerializer
  * @package BDBStudios\BreakfastSerializer
  */
-class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraversable
+class JSONSerializer extends Serializer
 {
 
     /**
@@ -140,6 +140,11 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
      */
     protected function objectToArray($baseObject, $exposeClassName = true)
     {
+        if (false === is_array($baseObject)) {
+            $currentClassName = get_class($baseObject);
+        } else {
+            $currentClassName = '';
+        }
 
         $data = array();
 
@@ -154,7 +159,11 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
                         $val = $this->objectToArray($val, $exposeClassName);
                     }
 
-                    $data[$this->cleanVariableName($key, $baseObject)] = $val;
+                    $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
+
+                    if (false === $this->isExcluded($cleanedVariableName, $currentClassName)) {
+                        $data[$cleanedVariableName] = $val;
+                    }
                 }
 
                 if (true === $exposeClassName && is_object($baseObject)) {
@@ -164,7 +173,6 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
 
             $this->decrementCurrentDepth();
         }
-
 
         return $data;
     }

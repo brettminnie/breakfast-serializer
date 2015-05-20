@@ -1,5 +1,5 @@
 exclusions:
-  - className: BDBStudios\BreakfastSerializerTest\Fixtures\ExclusionClass
-  - excludeVariables:
-    - internalProperty
-    - isExcluded
+  BDBStudios\BreakfastSerializerTest\Fixtures\ExclusionClass:
+    excludeVariables:
+      - internalProperty
+      - isExcluded

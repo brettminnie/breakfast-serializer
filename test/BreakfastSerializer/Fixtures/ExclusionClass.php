@@ -19,9 +19,9 @@ class ExclusionClass
     /** @var  SimpleClass */
     protected $simpleInstance;
 
-    public function construct()
+    public function __construct()
     {
-        $this->propertyOne = __METHOD__;
+        $this->propertyOne = __FUNCTION__;
 
         $this->propertyTwo = 1;
 

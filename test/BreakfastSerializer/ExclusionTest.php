@@ -2,7 +2,9 @@
 
 namespace BDBStudios\BreakfastSerializerTests;
 
+use BDBStudios\BreakfastSerializer\JSONSerializer;
 use BDBStudios\BreakfastSerializer\Serializer;
+use BDBStudios\BreakfastSerializer\SerializerFactory;
 use BDBStudios\BreakfastSerializerTest\Fixtures\ExclusionClass;
 
 class ExclusionTest extends \PHPUnit_Framework_TestCase
@@ -12,19 +14,18 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
      */
     protected $instance;
 
-    /** @var  Serializer */
+    /** @var  JSONSerializer */
     protected $serializer;
 
     public function setUp()
     {
         $this->instance = new ExclusionClass();
 
-        $this->serializer =
-            \Mockery::mock(
-                'BDBStudios\BreakfastSerializer\Serializer',
-                array(Serializer::FORMAT_JSON, Serializer::MAX_DEPTH_NOT_SET)
-            )
-                ->shouldDeferMissing();
+        $this->serializer = SerializerFactory::getSerializer(
+            Serializer::FORMAT_JSON,
+            Serializer::MAX_DEPTH_NOT_SET,
+            'test/config/exclusions'
+        );
     }
 
     public function testSetUp()
@@ -35,6 +36,18 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
 
     public function testExclusionOfProperties()
     {
+        $serialized = json_decode($this->serializer->serialize($this->instance), true);
+
+        $this->assertArrayNotHasKey('internalProperty', $serialized);
+        $this->assertArrayNotHasKey('excluded', $serialized);
+        $this->assertArrayHasKey('propertyOne', $serialized);
+        $this->assertArrayHasKey('propertyTwo', $serialized);
+        $this->assertArrayHasKey('simpleInstance', $serialized);
+        $this->assertArrayHasKey('className', $serialized);
+
+//        $deserialized = $this->serializer->deserialize(json_encode($serialized));
+//
+//        $this->assertTrue($deserialized instanceof ExclusionClass);
 
     }
 }

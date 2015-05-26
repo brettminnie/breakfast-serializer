@@ -84,12 +84,15 @@ class JSONSerializer extends Serializer
     )
     {
         foreach($data as $key=>$value) {
-            if (true === is_array($value)) {
+            if (true === is_array($value) && false === array_key_exists('className', $value)) {
                 $breadth[$key] = $value;
             } else {
                 try {
                     $property = $reflection->getProperty($key);
                     $property->setAccessible(true);
+                    if (is_array($value) &&  true === array_key_exists('className', $value)) {
+                        $value = $this->arrayToObject($value);
+                    }
                     $property->setValue($object, $value);
                 } catch (\ReflectionException $e) {
                     //Non property so we ignore this

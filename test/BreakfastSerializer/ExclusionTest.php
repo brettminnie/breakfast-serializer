@@ -65,6 +65,6 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($entity instanceof ExclusionClass);
 
 //        die(var_dump($entity, self::$data['originalData']));
-//        $this->assertEquals($entity, self::$data['originalData']);
+        $this->assertEquals($entity, self::$data['originalData']);
     }
 }

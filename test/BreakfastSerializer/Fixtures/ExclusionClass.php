@@ -25,7 +25,7 @@ class ExclusionClass
 
         $this->propertyTwo = 1;
 
-        $this->internalProperty = uniqid();
+        $this->internalProperty = 'Should not be set';
 
         $this->simpleInstance = new SimpleClass();
     }

@@ -14,6 +14,11 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
      */
     protected $instance;
 
+    /**
+     * @var array
+     */
+    protected static $data;
+
     /** @var  JSONSerializer */
     protected $serializer;
 
@@ -45,9 +50,21 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('simpleInstance', $serialized);
         $this->assertArrayHasKey('className', $serialized);
 
-//        $deserialized = $this->serializer->deserialize(json_encode($serialized));
-//
-//        $this->assertTrue($deserialized instanceof ExclusionClass);
+        self::$data['originalData'] = $this->instance;
+        self::$data['rawData']      = json_encode($serialized);
+    }
 
+    public function testDeserializePostExclusion()
+    {
+        $entity = $this
+            ->serializer
+            ->deserialize(
+                self::$data['rawData']
+            );
+
+        $this->assertTrue($entity instanceof ExclusionClass);
+
+//        die(var_dump($entity, self::$data['originalData']));
+//        $this->assertEquals($entity, self::$data['originalData']);
     }
 }

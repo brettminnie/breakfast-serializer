@@ -26,10 +26,14 @@ class JSONSerializer extends Serializer
      */
     public function deserialize($data)
     {
-        $data = json_decode($data, true);
+        if (false === is_array($data)) {
+            $arrayData = json_decode($data, true);
+        } else {
+            $arrayData = $data;
+        }
 
         return $this->arrayToObject(
-            $data
+            $arrayData
         );
     }
 
@@ -116,7 +120,12 @@ class JSONSerializer extends Serializer
 
         foreach($breadth as $key => $value) {
             foreach ($value as $instance) {
-                $propertyData[] = $this->arrayToObject($instance);
+                if (true === is_array($instance)) {
+                    $propertyData[] = $this->arrayToObject($instance);
+                } else {
+                    $propertyData[] = $instance;
+                }
+
             }
 
             try {

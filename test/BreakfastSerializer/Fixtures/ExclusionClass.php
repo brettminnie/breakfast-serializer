@@ -14,7 +14,7 @@ class ExclusionClass
     protected $internalProperty;
 
     /** @var bool  */
-    protected $isExcluded = true;
+    protected $isExcluded;
 
     /** @var  SimpleClass */
     protected $simpleInstance;
@@ -25,8 +25,18 @@ class ExclusionClass
 
         $this->propertyTwo = 1;
 
-        $this->internalProperty = 'Should not be set';
-
         $this->simpleInstance = new SimpleClass();
+    }
+
+    public function initForTest()
+    {
+        $this->isExcluded = true;
+        $this->internalProperty = 'Should not be set';
+    }
+
+    public function __get($name) {
+        if (property_exists(get_class($this), $name)) {
+            return $this->{$name};
+        }
     }
 }

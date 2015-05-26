@@ -28,6 +28,8 @@ class JSONSerializer extends Serializer
     {
         if (false === is_array($data)) {
             $arrayData = json_decode($data, true);
+        } elseif (null == $data) {
+            $arrayData = array();
         } else {
             $arrayData = $data;
         }

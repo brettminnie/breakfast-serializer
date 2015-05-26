@@ -25,6 +25,7 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->instance = new ExclusionClass();
+        $this->instance->initForTest();
 
         $this->serializer = SerializerFactory::getSerializer(
             Serializer::FORMAT_JSON,
@@ -56,6 +57,7 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
 
     public function testDeserializePostExclusion()
     {
+        /** @var ExclusionClass $entity */
         $entity = $this
             ->serializer
             ->deserialize(
@@ -63,8 +65,20 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
             );
 
         $this->assertTrue($entity instanceof ExclusionClass);
+        $this->assertNotEquals($entity, self::$data['originalData']);
 
-//        die(var_dump($entity, self::$data['originalData']));
-        $this->assertEquals($entity, self::$data['originalData']);
+        $this->assertEmpty($entity->__get('internalProperty'));
+        $this->assertNotEquals($entity->__get('internalProperty'), $this->instance->__get('internalProperty'));
+
+        $this->assertEmpty($entity->__get('isExcluded'));
+        $this->assertNotEquals($entity->__get('isExcluded'), $this->instance->__get('isExcluded'));
+
+        $this->assertNotEmpty($entity->__get('propertyOne'));
+        $this->assertEquals($entity->__get('propertyOne'), $this->instance->__get('propertyOne'));
+
+        $this->assertNotEmpty($entity->__get('propertyTwo'));
+        $this->assertEquals($entity->__get('propertyTwo'), $this->instance->__get('propertyTwo'));
     }
+
+
 }

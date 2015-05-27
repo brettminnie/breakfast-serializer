@@ -6,15 +6,19 @@ namespace BDBStudios\BreakfastSerializer;
  * Class JSONSerializer
  * @package BDBStudios\BreakfastSerializer
  */
-class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraversable
+class JSONSerializer extends Serializer
 {
 
     /**
-     * @param int $maxDepth
+     * @param int    $maxDepth
+     * @param string $configurationPath
      */
-    public function __construct($maxDepth = self::MAX_DEPTH_NOT_SET)
+    public function __construct(
+        $maxDepth = self::MAX_DEPTH_NOT_SET,
+        $configurationPath = ''
+    )
     {
-        parent::__construct(self::FORMAT_JSON, $maxDepth);
+        parent::__construct(self::FORMAT_JSON, $maxDepth, $configurationPath);
     }
 
     /**
@@ -22,10 +26,16 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
      */
     public function deserialize($data)
     {
-        $data = json_decode($data, true);
+        if (false === is_array($data)) {
+            $arrayData = json_decode($data, true);
+        } elseif (null == $data) {
+            $arrayData = array();
+        } else {
+            $arrayData = $data;
+        }
 
         return $this->arrayToObject(
-            $data
+            $arrayData
         );
     }
 
@@ -76,12 +86,15 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
     )
     {
         foreach($data as $key=>$value) {
-            if (true === is_array($value)) {
+            if (true === is_array($value) && false === array_key_exists('className', $value)) {
                 $breadth[$key] = $value;
             } else {
                 try {
                     $property = $reflection->getProperty($key);
                     $property->setAccessible(true);
+                    if (is_array($value) &&  true === array_key_exists('className', $value)) {
+                        $value = $this->arrayToObject($value);
+                    }
                     $property->setValue($object, $value);
                 } catch (\ReflectionException $e) {
                     //Non property so we ignore this
@@ -112,7 +125,12 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
 
         foreach($breadth as $key => $value) {
             foreach ($value as $instance) {
-                $propertyData[] = $this->arrayToObject($instance);
+                if (true === is_array($instance)) {
+                    $propertyData[] = $this->arrayToObject($instance);
+                } else {
+                    $propertyData[] = $instance;
+                }
+
             }
 
             try {
@@ -136,6 +154,11 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
      */
     protected function objectToArray($baseObject, $exposeClassName = true)
     {
+        if (false === is_array($baseObject)) {
+            $currentClassName = get_class($baseObject);
+        } else {
+            $currentClassName = '';
+        }
 
         $data = array();
 
@@ -150,7 +173,11 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
                         $val = $this->objectToArray($val, $exposeClassName);
                     }
 
-                    $data[$this->cleanVariableName($key, $baseObject)] = $val;
+                    $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
+
+                    if (false === $this->isExcluded($cleanedVariableName, $currentClassName)) {
+                        $data[$cleanedVariableName] = $val;
+                    }
                 }
 
                 if (true === $exposeClassName && is_object($baseObject)) {
@@ -160,7 +187,6 @@ class JSONSerializer extends Serializer implements IsSerializable, IsDepthTraver
 
             $this->decrementCurrentDepth();
         }
-
 
         return $data;
     }

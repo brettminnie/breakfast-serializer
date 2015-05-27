@@ -4,6 +4,7 @@ namespace BDBStudios\BreakfastSerializerTests;
 
 use BDBStudios\BreakfastSerializer\IsSerializable;
 use BDBStudios\BreakfastSerializer\JSONSerializer;
+use BDBStudios\BreakfastSerializer\Serializer;
 use BDBStudios\BreakfastSerializer\SerializerFactory;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleClass;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleContainer;
@@ -21,7 +22,12 @@ class JsonSerializerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        self::$instance = SerializerFactory::getSerializer();
+        self::$instance = SerializerFactory::getSerializer(
+            Serializer::FORMAT_JSON,
+            Serializer::MAX_DEPTH_NOT_SET,
+            'test/config/exclusions'
+
+        );
     }
 
     public function testSetUp()

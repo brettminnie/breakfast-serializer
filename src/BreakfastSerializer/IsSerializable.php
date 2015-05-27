@@ -22,7 +22,7 @@ interface IsSerializable
     public function serialize($data);
 
     /**
-     * @param array $data
+     * @param string $data
      * @return object
      */
     public function deserialize($data);

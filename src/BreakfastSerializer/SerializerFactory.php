@@ -23,7 +23,7 @@ class SerializerFactory
     public static function getSerializer(
         $dataFormat = IsSerializable::FORMAT_JSON,
         $maxDepth = IsSerializable::MAX_DEPTH_NOT_SET,
-        $configurationPath = ''
+        $configurationPath = './config'
     )
     {
         if (null === self::$serializerInstance) {
@@ -60,5 +60,4 @@ class SerializerFactory
             self::$serializerInstance = null;
         }
     }
-
 }

@@ -1,0 +1,7 @@
+#Example exclusions
+#
+#exclusions:
+#  BDBStudios\BreakfastSerializerTest\Fixtures\ExclusionClass:
+#    excludeVariables:
+#      - internalProperty
+#      - isExcluded

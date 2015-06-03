@@ -37,7 +37,7 @@ class ConfigurablePropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetConfigurationLoadsConfigurationWithNoPathFails()
     {
-        $return = $this->instance->getConfiguration();
+        $this->instance->getConfiguration();
     }
 
     public function testGetConfigurationLoadsConfiguration()

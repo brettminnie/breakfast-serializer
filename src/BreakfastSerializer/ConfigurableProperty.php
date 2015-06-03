@@ -74,7 +74,7 @@ trait ConfigurableProperty
             if (false === $file->isDot()) {
                 $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
 
-                if (true == is_array($fileData)) {
+                if (true === is_array($fileData)) {
                     self::$configurationData =
                         array_merge(
                             self::$configurationData,

@@ -2,6 +2,8 @@
 
 namespace BDBStudios\BreakfastSerializer;
 
+use Symfony\Component\Yaml\Exception\ParseException;
+
 /**
  * Class SerializerFactory
  * @package BDBStudios\BreakfastSerializer
@@ -19,6 +21,8 @@ class SerializerFactory
      * @param int    $maxDepth
      * @param string $configurationPath
      * @return Serializer
+     * @throws \LogicException
+     * @throws ParseException
      */
     public static function getSerializer(
         $dataFormat = IsSerializable::FORMAT_JSON,
@@ -36,6 +40,7 @@ class SerializerFactory
             }
 
             self::$serializerInstance = $instance;
+            self::$serializerInstance->loadConfiguration();
         }
 
         return self::$serializerInstance;

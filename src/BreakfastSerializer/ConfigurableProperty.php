@@ -61,7 +61,7 @@ trait ConfigurableProperty
      * @throws \LogicException
      * @throws ParseException
      */
-    protected function loadConfiguration()
+    public function loadConfiguration()
     {
         if (false === $this->configurationPathIsValid()) {
             throw new \LogicException('The path to the configuration file is invalid');

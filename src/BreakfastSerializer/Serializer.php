@@ -34,13 +34,12 @@ abstract class Serializer
     public function __construct(
         $dataFormat = Serializer::FORMAT_XML,
         $maxDepth = Serializer::MAX_DEPTH_NOT_SET,
-        $configurationPath = ''
+        $configurationPath = './config'
     )
     {
         $this->format = $dataFormat;
         $this->maxDepth = $maxDepth;
         $this->configurationPath = $configurationPath;
-
         $this->currentDepth = 1;
     }
 

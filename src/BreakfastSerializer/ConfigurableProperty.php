@@ -72,15 +72,15 @@ trait ConfigurableProperty
 
         foreach ($iterator as $file) {
             if (false === $file->isDot()) {
-                self::$configurationData =
-                    array_merge(
-                        self::$configurationData,
-                        Yaml::parse(
-                            file_get_contents(
-                                $file->getRealPath()
-                            )
-                        )
-                    );
+                $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
+
+                if (true == is_array($fileData)) {
+                    self::$configurationData =
+                        array_merge(
+                            self::$configurationData,
+                            $fileData
+                        );
+                }
             }
         }
 

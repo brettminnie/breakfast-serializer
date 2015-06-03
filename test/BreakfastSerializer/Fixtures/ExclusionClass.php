@@ -4,13 +4,13 @@ namespace BDBStudios\BreakfastSerializerTest\Fixtures;
 
 class ExclusionClass
 {
-    /** @var  String */
+    /** @var  string */
     protected $propertyOne;
 
     /** @var  int */
     protected $propertyTwo;
 
-    /** @var  int */
+    /** @var  string */
     protected $internalProperty;
 
     /** @var bool  */
@@ -34,7 +34,8 @@ class ExclusionClass
         $this->internalProperty = 'Should not be set';
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         if (property_exists(get_class($this), $name)) {
             return $this->{$name};
         }

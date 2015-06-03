@@ -61,7 +61,7 @@ trait ConfigurableProperty
      * @throws \LogicException
      * @throws ParseException
      */
-    protected function loadConfiguration()
+    public function loadConfiguration()
     {
         if (false === $this->configurationPathIsValid()) {
             throw new \LogicException('The path to the configuration file is invalid');
@@ -72,15 +72,15 @@ trait ConfigurableProperty
 
         foreach ($iterator as $file) {
             if (false === $file->isDot()) {
-                self::$configurationData =
-                    array_merge(
-                        self::$configurationData,
-                        Yaml::parse(
-                            file_get_contents(
-                                $file->getRealPath()
-                            )
-                        )
-                    );
+                $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
+
+                if (true === is_array($fileData)) {
+                    self::$configurationData =
+                        array_merge(
+                            self::$configurationData,
+                            $fileData
+                        );
+                }
             }
         }
 

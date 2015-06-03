@@ -2,6 +2,8 @@
 
 namespace BDBStudios\BreakfastSerializer;
 
+use Symfony\Component\Yaml\Exception\ParseException;
+
 /**
  * Interface IsConfigurable
  * @package BDBStudios\BreakfastSerializer
@@ -24,5 +26,12 @@ interface IsConfigurable
      * @return boolean
      */
     public function getConfiguration($configurationKey = null);
+
+    /**
+     * @return IsConfigurable
+     * @throws \LogicException
+     * @throws ParseException
+     */
+    public function loadConfiguration();
 }
 

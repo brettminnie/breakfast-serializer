@@ -6,9 +6,10 @@ namespace BDBStudios\BreakfastSerializer;
  * Class Serializer
  * @package BDBStudios\BreakfastSerializer
  */
-abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable, IsExcludable
+abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable, IsExcludable, IsMappable
 {
     use ConfigurableProperty;
+    use MappableProperty;
 
     /**
      * @var int

@@ -1,6 +1,6 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer;
+namespace BDBStudios\BreakfastSerializer\Property;
 
 /**
  * Interface IsDepthTraversable
@@ -10,7 +10,7 @@ interface IsDepthTraversable
 {
     /**
      * @param int $depth
-     * @return IsSerializable
+     * @return IsDepthTraversable
      * @throws \LogicException
      */
     public function setDepth($depth);
@@ -21,12 +21,12 @@ interface IsDepthTraversable
     public function getDepth();
 
     /**
-     * @return IsSerializable
+     * @return IsDepthTraversable
      */
     public function incrementCurrentDepth();
 
     /**
-     * @return IsSerializable
+     * @return IsDepthTraversable
      */
     public function decrementCurrentDepth();
 
@@ -36,7 +36,7 @@ interface IsDepthTraversable
     public function isWithinBounds();
 
     /**
-     * @return IsSerializable
+     * @return IsDepthTraversable
      */
     public function resetCurrentDepth();
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer;
+namespace BDBStudios\BreakfastSerializer\Property;
 
 /**
  * Interface IsExcludable

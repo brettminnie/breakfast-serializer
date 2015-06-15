@@ -1,6 +1,6 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer;
+namespace BDBStudios\BreakfastSerializer\Property;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -23,8 +23,7 @@ trait ConfigurableProperty
     protected static $configurationData;
 
     /**
-     * @param string $pathName
-     * @return IsConfigurable
+     * @inheritdoc
      */
     public function setConfigurationPath($pathName = './config')
     {
@@ -34,7 +33,7 @@ trait ConfigurableProperty
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getConfigurationPath()
     {
@@ -42,8 +41,7 @@ trait ConfigurableProperty
     }
 
     /**
-     * @param string    $configurationKey
-     * @return boolean
+     * @inheritdoc
      */
     public function getConfiguration($configurationKey = null)
     {
@@ -57,9 +55,7 @@ trait ConfigurableProperty
     }
 
     /**
-     * @return IsConfigurable
-     * @throws \LogicException
-     * @throws ParseException
+     * @inheritdoc
      */
     public function loadConfiguration()
     {

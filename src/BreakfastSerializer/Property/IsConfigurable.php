@@ -1,9 +1,8 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer;
+namespace BDBStudios\BreakfastSerializer\Property;
 
 use Symfony\Component\Yaml\Exception\ParseException;
-
 /**
  * Interface IsConfigurable
  * @package BDBStudios\BreakfastSerializer

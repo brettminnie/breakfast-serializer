@@ -2,6 +2,13 @@
 
 namespace BDBStudios\BreakfastSerializer;
 
+use BDBStudios\BreakfastSerializer\Property\ConfigurableProperty;
+use BDBStudios\BreakfastSerializer\Property\IsConfigurable;
+use BDBStudios\BreakfastSerializer\Property\IsDepthTraversable;
+use BDBStudios\BreakfastSerializer\Property\IsExcludable;
+use BDBStudios\BreakfastSerializer\Property\IsMappable;
+use BDBStudios\BreakfastSerializer\Property\MappableProperty;
+
 /**
  * Class Serializer
  * @package BDBStudios\BreakfastSerializer

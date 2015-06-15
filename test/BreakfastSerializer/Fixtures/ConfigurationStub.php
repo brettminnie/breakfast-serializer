@@ -2,8 +2,8 @@
 
 namespace BDBStudios\BreakfastSerializerTest\Fixtures;
 
-use BDBStudios\BreakfastSerializer\ConfigurableProperty;
-use BDBStudios\BreakfastSerializer\IsConfigurable;
+use BDBStudios\BreakfastSerializer\Property\ConfigurableProperty;
+use BDBStudios\BreakfastSerializer\Property\IsConfigurable;
 
 /**
  * Class ConfigurationStub

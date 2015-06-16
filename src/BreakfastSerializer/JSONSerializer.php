@@ -175,7 +175,9 @@ class JSONSerializer extends Serializer
 
                     $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
 
-                    if (false === $this->isExcluded($cleanedVariableName, $currentClassName)) {
+                    $isIncluded = !$this->isExcluded($cleanedVariableName, $currentClassName, $this->getConfiguration());
+
+                    if ($isIncluded) {
                         $data[$cleanedVariableName] = $val;
                     }
                 }

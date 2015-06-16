@@ -10,8 +10,9 @@ interface IsExcludable
 {
     /**
      * @param string $propertyName
-     * @param string $className
+     * @param string $currentClassName
+     * @param array  $configuration
      * @return boolean
      */
-    public function isExcluded($propertyName, $className);
+    public function isExcluded($propertyName, $currentClassName, array $configuration);
 }

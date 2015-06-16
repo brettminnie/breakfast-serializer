@@ -10,9 +10,11 @@ interface IsMappable
 {
     /**
      * @param string $propertyName
+     * @param string $currentClassName
+     * @param array  $configuration
      * @return boolean
      */
-    public function isMappable($propertyName);
+    public function isMappable($propertyName, $currentClassName, array $configuration);
 
     /**
      * @param string $property

@@ -3,6 +3,7 @@
 namespace BDBStudios\BreakfastSerializer;
 
 use BDBStudios\BreakfastSerializer\Property\ConfigurableProperty;
+use BDBStudios\BreakfastSerializer\Property\ExcludableProperty;
 use BDBStudios\BreakfastSerializer\Property\IsConfigurable;
 use BDBStudios\BreakfastSerializer\Property\IsDepthTraversable;
 use BDBStudios\BreakfastSerializer\Property\IsExcludable;
@@ -17,7 +18,8 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
 {
     use ConfigurableProperty;
     use MappableProperty;
-
+    use ExcludableProperty;
+    
     /**
      * @var int
      */
@@ -163,26 +165,5 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
         $cleanedName = str_replace($className, '', $cleanedName);
 
         return trim($cleanedName);
-    }
-
-    /**
-     * @param string $propertyName
-     * @param string $className
-     * @return bool
-     */
-    public function isExcluded($propertyName, $className)
-    {
-        if (true === isset($this->getConfiguration()['exclusions'][$className]['excludeVariables'])) {
-
-            return array_key_exists(
-                $propertyName,
-                array_flip(
-                    $this->getConfiguration()['exclusions'][$className]['excludeVariables']
-                )
-            );
-        }
-
-        return false;
-
     }
 }

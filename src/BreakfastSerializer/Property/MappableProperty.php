@@ -11,9 +11,18 @@ trait MappableProperty
     /**
      * @inheritdoc
      */
-    public function isMappable($propertyName)
+    public function isMappable($propertyName, $currentClassName, array $configuration)
     {
+        if (true === isset($configuration['mappings'][$currentClassName]['mappedVariables'])) {
+            return array_key_exists(
+                $propertyName,
+                array_flip(
+                    $configuration['exclusions'][$currentClassName]['mappedVariables']
+                )
+            );
+        }
 
+        return false;
     }
 
     /**

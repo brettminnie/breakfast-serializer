@@ -18,15 +18,15 @@ interface IsMappable
 
     /**
      * @param string $property
-     * @param array $data
+     * @param array $configuration
      * @return IsMappable
      */
-    public function remapProperty($property, array $data);
+    public function remapProperty($property, array $configuration);
 
     /**
      * @param string $property
-     * @param array $data
+     * @param array $configuration
      * @return IsMappable
      */
-    public function mapProperty($property, array $data);
+    public function mapProperty($property, array $configuration);
 }

@@ -25,7 +25,7 @@ class JsonSerializerTest extends \PHPUnit_Framework_TestCase
         self::$instance = SerializerFactory::getSerializer(
             Serializer::FORMAT_JSON,
             Serializer::MAX_DEPTH_NOT_SET,
-            'test/config/exclusions'
+            'test/config'
 
         );
     }

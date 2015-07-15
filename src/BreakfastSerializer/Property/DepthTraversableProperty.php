@@ -10,6 +10,16 @@ namespace BDBStudios\BreakfastSerializer\Property;
 trait DepthTraversableProperty
 {
     /**
+     * @var int
+     */
+    protected $maxDepth;
+
+    /**
+     * @var int
+     */
+    protected $currentDepth;
+
+    /**
      * @inheritdoc
      */
     public function setDepth($maxDepth)

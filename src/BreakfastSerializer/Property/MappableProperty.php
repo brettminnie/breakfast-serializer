@@ -16,9 +16,7 @@ trait MappableProperty
         if (true === isset($configuration['mappings'][$currentClassName]['mappedVariables'])) {
             return array_key_exists(
                 $propertyName,
-                array_flip(
-                    $configuration['mappings'][$currentClassName]['mappedVariables']
-                )
+                $configuration['mappings'][$currentClassName]['mappedVariables']
             );
         }
 
@@ -34,14 +32,11 @@ trait MappableProperty
 
         if (false === property_exists($this, $property)) {
             $keyName = array_flip($configuration['mappings'][$currentClassName]['mappedVariables'][$property]);
-            
-            $this->{$keyName} =
-                clone $this->{$configuration['mappings'][$currentClassName]['mappedVariables'][$property]};
 
-            unset($this->{$keyName});
+            return $keyName;
         }
 
-        return $this;
+        return $property;
     }
 
     /**
@@ -50,14 +45,14 @@ trait MappableProperty
     public function mapProperty($property, array $configuration)
     {
         $currentClassName = get_class($this);
-
+        $instance = clone $this;
         if (true === property_exists($this, $property)) {
-            $this->{$configuration['mappings'][$currentClassName]['mappedVariables'][$property]}
-                = clone $this->{$property};
+            $instance->{$configuration['mappings'][$currentClassName]['mappedVariables'][$property]}
+                = $instance->{$property};
 
-            unset($this->{$property});
+            unset($instance->{$property});
         }
 
-        return $this;
+        return $instance;
     }
 }

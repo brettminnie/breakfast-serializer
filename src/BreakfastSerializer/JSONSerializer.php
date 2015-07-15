@@ -26,7 +26,7 @@ class JSONSerializer extends Serializer
      */
     public function deserialize($data)
     {
-        if (false === is_array($data)) {
+        if (true === is_string($data)) {
             $arrayData = json_decode($data, true);
         } elseif (null == $data) {
             $arrayData = array();
@@ -86,6 +86,11 @@ class JSONSerializer extends Serializer
     )
     {
         foreach($data as $key=>$value) {
+            if ($this->isMappable($key, get_class($this), $this->getConfiguration())) {
+                $key = $this->remapProperty($key, $this->getConfiguration());
+                var_dump($key);
+            }
+
             if (true === is_array($value) && false === array_key_exists('className', $value)) {
                 $breadth[$key] = $value;
             } else {
@@ -175,7 +180,8 @@ class JSONSerializer extends Serializer
 
                     $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
 
-                    $isIncluded = !$this->isExcluded($cleanedVariableName, $currentClassName, $this->getConfiguration());
+                    $isIncluded = !$this
+                        ->isExcluded($cleanedVariableName, $currentClassName, $this->getConfiguration());
 
                     if ($isIncluded) {
                         $data[$cleanedVariableName] = $val;

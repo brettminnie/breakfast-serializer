@@ -1,5 +1,5 @@
 mappings:
   BDBStudios\BreakfastSerializerTest\Fixtures\MappingClass:
     mappedVariables:
-      - mappedPropertyOne: 'propertyThree'
-      - mappedPropertyTwo: 'propertyFour'
+      mappedPropertyOne: 'propertyThree'
+      mappedPropertyTwo: 'propertyFour'

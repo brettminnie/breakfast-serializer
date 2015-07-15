@@ -21,16 +21,6 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
     use MappableProperty;
     use ExcludableProperty;
     use DepthTraversableProperty;
-    
-    /**
-     * @var int
-     */
-    protected $maxDepth;
-
-    /**
-     * @var int
-     */
-    protected $currentDepth;
 
     /**
      * @var int

@@ -1,11 +1,13 @@
 <?php
 
-
 namespace BDBStudios\BreakfastSerializerTest\Fixtures;
 
+use BDBStudios\BreakfastSerializer\Property\IsMappable;
+use BDBStudios\BreakfastSerializer\Property\MappableProperty;
 
-class MappingClass
+class MappingClass implements IsMappable
 {
+    use MappableProperty;
     /**
      * @var string
      */

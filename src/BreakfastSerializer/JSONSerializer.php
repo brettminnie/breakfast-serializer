@@ -85,11 +85,7 @@ class JSONSerializer extends Serializer
         $object
     )
     {
-        foreach($data as $key=>$value) {
-            if ($this->isMappable($key, get_class($this), $this->getConfiguration())) {
-                $key = $this->remapProperty($key, $this->getConfiguration());
-                var_dump($key);
-            }
+        foreach($this->remapArrayKeys($data, $object) as $key=>$value) {
 
             if (true === is_array($value) && false === array_key_exists('className', $value)) {
                 $breadth[$key] = $value;
@@ -110,6 +106,26 @@ class JSONSerializer extends Serializer
         }
 
         return $object;
+    }
+
+    /**
+     * @param array $data
+     * @param       $object
+     * @return array
+     */
+    protected function remapArrayKeys(array $data, $object)
+    {
+        $remappedData = array();
+
+        foreach($data as $key=>$value) {
+            if (true === $this->isPropertyMapped($key, get_class($object), $this->getConfiguration())) {
+                $newKey = $this->remapProperty($key, get_class($object), $this->getConfiguration());
+            } else {
+                $newKey = $key;
+            }
+            $remappedData[$newKey] = $value;
+        }
+        return $remappedData;
     }
 
     /**

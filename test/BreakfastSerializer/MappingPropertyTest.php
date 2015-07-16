@@ -50,7 +50,7 @@ class MappingPropertyTest extends \PHPUnit_Framework_TestCase
     public function testPropertyThreeIsMappable()
     {
         $this->assertTrue(
-            $this->instance->isMappable(
+            $this->instance->isPropertyMappable(
                 'mappedPropertyOne',
                 get_class($this->instance),
                 $this->serializer->getConfiguration()
@@ -62,7 +62,7 @@ class MappingPropertyTest extends \PHPUnit_Framework_TestCase
     {
         $propertyName = uniqid('property');
         $this->assertFalse(
-            $this->instance->isMappable(
+            $this->instance->isPropertyMappable(
                 $propertyName,
                 get_class($this->instance),
                 $this->serializer->getConfiguration()
@@ -74,7 +74,7 @@ class MappingPropertyTest extends \PHPUnit_Framework_TestCase
     {
         $instance = new NoConfigMappingClass();
         $this->assertFalse(
-          $instance->isMappable(
+          $instance->isPropertyMappable(
               'notSetForMapping',
               get_class($instance),
               $this->serializer->getConfiguration()
@@ -110,11 +110,52 @@ class MappingPropertyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testIsMappedReturnsTrueOnValidProperty()
+    {
+        $this->assertTrue(
+            $this->instance->isPropertyMapped(
+                'propertyThree',
+                get_class($this->instance),
+                $this->serializer->getConfiguration()
+            )
+        );
+    }
+
+    public function testIsMappedReturnsFalseOnNonMappedProperty()
+    {
+        $this->assertFalse(
+            $this->instance->isPropertyMapped(
+                'propertyOne',
+                get_class($this->instance),
+                $this->serializer->getConfiguration()
+            )
+        );
+    }
+
+    public function testIsMappedReturnsFalseOnNonExistantProperty()
+    {
+        $instance = new NoConfigMappingClass();
+        $this->assertFalse(
+            $instance->isPropertyMapped(
+                'invalidProperty',
+                get_class($instance),
+                $this->serializer->getConfiguration()
+            )
+        );
+    }
+
     public function testDeserializeCorrectlyMapsProperties()
     {
         $remappedClass =
             $this->serializer->deserialize(self::$serializedMappedInstance);
 
-//        var_dump($remappedClass);
+        $remappedClass = json_decode($this->serializer->serialize($remappedClass), true);
+        $mappedClass = json_decode(self::$serializedMappedInstance, true);
+
+        $this->assertNotEquals($remappedClass, $mappedClass);
+
+        foreach($remappedClass as $item) {
+            $this->assertTrue(in_array($item, $mappedClass));
+        }
     }
 }

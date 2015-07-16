@@ -14,14 +14,23 @@ interface IsMappable
      * @param array  $configuration
      * @return boolean
      */
-    public function isMappable($propertyName, $currentClassName, array $configuration);
+    public function isPropertyMappable($propertyName, $currentClassName, array $configuration);
+
+    /**
+     * @param string $propertyName
+     * @param string $currentClassName
+     * @param array  $configuration
+     * @return boolean
+     */
+    public function isPropertyMapped($propertName, $currentClassName, array $configuration);
 
     /**
      * @param string $property
+     * @param string $currentClassName
      * @param array $configuration
      * @return IsMappable
      */
-    public function remapProperty($property, array $configuration);
+    public function remapProperty($property, $currentClassName, array $configuration);
 
     /**
      * @param string $property

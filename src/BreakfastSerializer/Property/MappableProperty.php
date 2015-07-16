@@ -11,7 +11,7 @@ trait MappableProperty
     /**
      * @inheritdoc
      */
-    public function isMappable($propertyName, $currentClassName, array $configuration)
+    public function isPropertyMappable($propertyName, $currentClassName, array $configuration)
     {
         if (true === isset($configuration['mappings'][$currentClassName]['mappedVariables'])) {
             return array_key_exists(
@@ -26,12 +26,26 @@ trait MappableProperty
     /**
      * @inheritdoc
      */
-    public function remapProperty($property, array $configuration)
+    public function isPropertyMapped($propertyName, $currentClassName, array $configuration)
     {
-        $currentClassName = get_class($this);
+        if (true === isset($configuration['mappings'][$currentClassName]['mappedVariables'])) {
+            return in_array(
+                $propertyName,
+                $configuration['mappings'][$currentClassName]['mappedVariables']
+            );
+        }
 
-        if (false === property_exists($this, $property)) {
-            $keyName = array_flip($configuration['mappings'][$currentClassName]['mappedVariables'][$property]);
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function remapProperty($property, $currentClassName, array $configuration)
+    {
+        if (false === property_exists($currentClassName, $property) &&
+            true === in_array($property, $configuration['mappings'][$currentClassName]['mappedVariables'])) {
+            $keyName = array_flip($configuration['mappings'][$currentClassName]['mappedVariables'])[$property];
 
             return $keyName;
         }

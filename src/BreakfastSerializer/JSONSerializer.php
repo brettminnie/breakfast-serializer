@@ -117,7 +117,7 @@ class JSONSerializer extends Serializer
     {
         $remappedData = array();
 
-        foreach($data as $key=>$value) {
+        foreach ($data as $key=>$value) {
             if (true === $this->isPropertyMapped($key, get_class($object), $this->getConfiguration())) {
                 $newKey = $this->remapProperty($key, get_class($object), $this->getConfiguration());
             } else {
@@ -144,7 +144,7 @@ class JSONSerializer extends Serializer
     {
         $propertyData = array();
 
-        foreach($breadth as $key => $value) {
+        foreach ($breadth as $key => $value) {
             foreach ($value as $instance) {
                 if (true === is_array($instance)) {
                     $propertyData[] = $this->arrayToObject($instance);
@@ -174,12 +174,7 @@ class JSONSerializer extends Serializer
      */
     protected function objectToArray($baseObject, $exposeClassName = true)
     {
-        if (false === is_array($baseObject)) {
-            $currentClassName = get_class($baseObject);
-        } else {
-            $currentClassName = '';
-        }
-
+        $currentClassName = (false === is_array($baseObject))  ? get_class($baseObject) : '';
         $data = array();
 
         if ($this->isWithinBounds()) {

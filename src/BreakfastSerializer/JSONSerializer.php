@@ -151,7 +151,6 @@ class JSONSerializer extends Serializer
                 } else {
                     $propertyData[] = $instance;
                 }
-
             }
 
             try {
@@ -189,24 +188,13 @@ class JSONSerializer extends Serializer
             $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
 
             if (true === SerializerFactory::canIterate($objAsArray)) {
-                foreach ($objAsArray as $key => $val) {
-                    if (true === is_array($val) || true === is_object($val)) {
-                        $val = $this->objectToArray($val, $exposeClassName);
-                    }
-
-                    $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
-
-                    $isIncluded = !$this
-                        ->isExcluded($cleanedVariableName, $currentClassName, $this->getConfiguration());
-
-                    if ($isIncluded) {
-                        $data[$cleanedVariableName] = $val;
-                    }
-                }
-
-                if (true === $exposeClassName && is_object($baseObject)) {
-                    $data['className'] = get_class($baseObject);
-                }
+                $this->iterateClassProperties(
+                    $objAsArray,
+                    $data,
+                    $exposeClassName,
+                    $baseObject,
+                    $currentClassName
+                );
             }
 
             $this->decrementCurrentDepth();
@@ -215,4 +203,38 @@ class JSONSerializer extends Serializer
         return $data;
     }
 
+    /**
+     * @param array $objAsArray
+     * @param array $data
+     * @param       $exposeClassName
+     * @param       $baseObject
+     * @param       $currentClassName
+     */
+    protected function iterateClassProperties(
+        array $objAsArray,
+        array& $data,
+        $exposeClassName,
+        $baseObject,
+        $currentClassName
+    )
+    {
+        foreach ($objAsArray as $key => $val) {
+            if (true === is_array($val) || true === is_object($val)) {
+                $val = $this->objectToArray($val, $exposeClassName);
+            }
+
+            $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
+
+            $isIncluded = !$this
+                ->isExcluded($cleanedVariableName, $currentClassName, $this->getConfiguration());
+
+            if ($isIncluded) {
+                $data[$cleanedVariableName] = $val;
+            }
+        }
+
+        if (true === $exposeClassName && is_object($baseObject)) {
+            $data['className'] = get_class($baseObject);
+        }
+    }
 }

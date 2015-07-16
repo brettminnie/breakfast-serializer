@@ -22,7 +22,7 @@ interface IsMappable
      * @param array  $configuration
      * @return boolean
      */
-    public function isPropertyMapped($propertName, $currentClassName, array $configuration);
+    public function isPropertyMapped($propertyName, $currentClassName, array $configuration);
 
     /**
      * @param string $property

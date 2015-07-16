@@ -85,7 +85,7 @@ class JSONSerializer extends Serializer
         $object
     )
     {
-        foreach($this->remapArrayKeys($data, $object) as $key=>$value) {
+        foreach ($this->remapArrayKeys($data, $object) as $key=>$value) {
 
             if (true === is_array($value) && false === array_key_exists('className', $value)) {
                 $breadth[$key] = $value;
@@ -93,7 +93,7 @@ class JSONSerializer extends Serializer
                 try {
                     $property = $reflection->getProperty($key);
                     $property->setAccessible(true);
-                    if (is_array($value) &&  true === array_key_exists('className', $value)) {
+                    if (is_array($value) && true === array_key_exists('className', $value)) {
                         $value = $this->arrayToObject($value);
                     }
                     $property->setValue($object, $value);
@@ -174,8 +174,12 @@ class JSONSerializer extends Serializer
      */
     protected function objectToArray($baseObject, $exposeClassName = true)
     {
-        $currentClassName = (false === is_array($baseObject))  ? get_class($baseObject) : '';
+        $currentClassName = '';
         $data = array();
+
+        if (false === is_array($baseObject)) {
+            $currentClassName = get_class($baseObject);
+        }
 
         if ($this->isWithinBounds()) {
             $this->incrementCurrentDepth();
@@ -218,18 +222,47 @@ class JSONSerializer extends Serializer
                 $val = $this->objectToArray($val, $exposeClassName);
             }
 
-            $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
-
-            $isIncluded = !$this
-                ->isExcluded($cleanedVariableName, $currentClassName, $this->getConfiguration());
-
-            if ($isIncluded) {
-                $data[$cleanedVariableName] = $val;
-            }
+            $this->SanitizeAndMapProperty($data, $baseObject, $currentClassName, $key, $val);
         }
 
         if (true === $exposeClassName && is_object($baseObject)) {
             $data['className'] = get_class($baseObject);
         }
     }
+
+    /**
+     * @param array $data
+     * @param       $baseObject
+     * @param       $currentClassName
+     * @param       $key
+     * @param       $val
+     */
+    protected function SanitizeAndMapProperty(array& $data, $baseObject, $currentClassName, $key, $val)
+    {
+        $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
+
+        if ($this->includeClassProperty($cleanedVariableName, $currentClassName)) {
+            $data[$cleanedVariableName] = $val;
+        }
+    }
+
+    protected function mapClassProperty()
+    {
+
+    }
+
+    /**
+     * @param $cleanedVariableName
+     * @param $currentClassName
+     * @return bool
+     */
+    protected function includeClassProperty($cleanedVariableName, $currentClassName)
+    {
+        return !$this->isExcluded(
+            $cleanedVariableName,
+            $currentClassName,
+            $this->getConfiguration()
+        );
+    }
+
 }

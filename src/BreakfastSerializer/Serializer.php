@@ -83,4 +83,71 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
 
         return trim($cleanedName);
     }
+
+    /**
+     * @param array $objAsArray
+     * @param array $data
+     * @param       $exposeClassName
+     * @param       $baseObject
+     * @param       $currentClassName
+     */
+    abstract protected function iterateClassProperties(
+        array $objAsArray,
+        array& $data,
+        $exposeClassName,
+        $baseObject,
+        $currentClassName
+    );
+
+    /**
+     * @param array $data
+     * @param       $baseObject
+     * @param       $currentClassName
+     * @param       $key
+     * @param       $val
+     */
+    protected function SanitizeAndMapProperty(array& $data, $baseObject, $currentClassName, $key, $val)
+    {
+        $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
+        $this->includeClassProperty($data, $cleanedVariableName, $currentClassName, $val);
+        $this->mapClassProperty($data, $cleanedVariableName, $currentClassName, $val);
+    }
+
+    /**
+     * @param array $data
+     * @param       $cleanedVariableName
+     * @param       $currentClassName
+     * @param       $val
+     */
+    protected function mapClassProperty(array& $data, &$cleanedVariableName, $currentClassName, $val)
+    {
+        $configuration = $this->getConfiguration();
+
+        if ($this->isPropertyMappable(
+            $cleanedVariableName,
+            $currentClassName,
+            $configuration
+        )) {
+            $data[$configuration['mappings'][$currentClassName]['mappedVariables'][$cleanedVariableName]] = $val;
+            unset($data[$cleanedVariableName]);
+        }
+    }
+
+    /**
+     * @param array& $data
+     * @param string $cleanedVariableName
+     * @param string $currentClassName
+     * @param mixed  $val
+     * @return bool
+     */
+    protected function includeClassProperty(array& $data, $cleanedVariableName, $currentClassName, $val)
+    {
+        if (false === $this->isExcluded(
+            $cleanedVariableName,
+            $currentClassName,
+            $this->getConfiguration()
+        )) {
+            $data[$cleanedVariableName] = $val;
+        }
+    }
 }

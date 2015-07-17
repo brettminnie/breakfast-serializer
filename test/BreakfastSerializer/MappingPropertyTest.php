@@ -82,34 +82,6 @@ class MappingPropertyTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testPropertiesAreMapped()
-    {
-        $serializedInstance = $this->serializer->serialize($this->instance);
-
-        $className = get_class($this->instance);
-        $mappableProperties = $this->serializer->getConfiguration()['mappings'][$className]['mappedVariables'];
-
-        //Does our serialized class have our expected keys
-        foreach (array_keys($mappableProperties) as $propertyName) {
-            $this->assertContains($propertyName, $serializedInstance);
-        }
-
-        //Map each property
-        foreach (array_keys($mappableProperties) as $propertyName) {
-            $this->instance = $this->instance->mapProperty($propertyName, $this->serializer->getConfiguration());
-            $this->assertTrue($this->instance instanceof IsMappable);
-        }
-
-        self::$serializedMappedInstance = $this->serializer->serialize($this->instance);
-
-        $this->assertNotEquals($serializedInstance, self::$serializedMappedInstance);
-
-        //Does our serialized class have our expected keys
-        foreach (array_keys($mappableProperties) as $propertyName) {
-            $this->assertNotContains($propertyName, self::$serializedMappedInstance);
-        }
-    }
-
     public function testIsMappedReturnsTrueOnValidProperty()
     {
         $this->assertTrue(
@@ -144,12 +116,37 @@ class MappingPropertyTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testPropertiesAreMapped()
+    {
+        $mockedSerializedInstance = (array)$this->instance;
+
+        foreach ($mockedSerializedInstance  as $key=>$val) {
+            $mockedSerializedInstance[str_replace('*', '', $key)] = $val;
+            unset($key);
+        }
+
+        $className = get_class($this->instance);
+        $mappableProperties = $this->serializer->getConfiguration()['mappings'][$className]['mappedVariables'];
+
+        //Does our serialized class have our expected keys
+        foreach (array_keys($mappableProperties) as $propertyName) {
+            $this->assertFalse(array_key_exists($propertyName, $mockedSerializedInstance));
+        }
+
+        self::$serializedMappedInstance = $this->serializer->serialize($this->instance);
+        $this->assertNotEquals(json_encode($mockedSerializedInstance), self::$serializedMappedInstance);
+
+        //Does our serialized class have our expected keys
+        foreach (array_keys($mappableProperties) as $propertyName) {
+            $this->assertNotContains($propertyName, self::$serializedMappedInstance);
+        }
+    }
+
     public function testDeserializeCorrectlyMapsProperties()
     {
         $remappedClass =
             $this->serializer->deserialize(self::$serializedMappedInstance);
 
-        $remappedClass = json_decode($this->serializer->serialize($remappedClass), true);
         $mappedClass = json_decode(self::$serializedMappedInstance, true);
 
         $this->assertNotEquals($remappedClass, $mappedClass);
@@ -157,5 +154,10 @@ class MappingPropertyTest extends \PHPUnit_Framework_TestCase
         foreach($remappedClass as $item) {
             $this->assertTrue(in_array($item, $mappedClass));
         }
+
+        $this->assertEquals(
+            $remappedClass,
+            $this->serializer->deserialize(self::$serializedMappedInstance)
+        );
     }
 }

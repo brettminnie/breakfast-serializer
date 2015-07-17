@@ -229,40 +229,4 @@ class JSONSerializer extends Serializer
             $data['className'] = get_class($baseObject);
         }
     }
-
-    /**
-     * @param array $data
-     * @param       $baseObject
-     * @param       $currentClassName
-     * @param       $key
-     * @param       $val
-     */
-    protected function SanitizeAndMapProperty(array& $data, $baseObject, $currentClassName, $key, $val)
-    {
-        $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
-
-        if ($this->includeClassProperty($cleanedVariableName, $currentClassName)) {
-            $data[$cleanedVariableName] = $val;
-        }
-    }
-
-    protected function mapClassProperty()
-    {
-
-    }
-
-    /**
-     * @param $cleanedVariableName
-     * @param $currentClassName
-     * @return bool
-     */
-    protected function includeClassProperty($cleanedVariableName, $currentClassName)
-    {
-        return !$this->isExcluded(
-            $cleanedVariableName,
-            $currentClassName,
-            $this->getConfiguration()
-        );
-    }
-
 }

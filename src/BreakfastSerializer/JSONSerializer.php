@@ -96,9 +96,7 @@ class JSONSerializer extends Serializer
                     }
                     $property->setValue($object, $value);
                 } catch (\ReflectionException $e) {
-                    //Non property so we ignore this
-                } catch (\Exception $e) {
-                    throw $e;
+                    // Non property so we ignore this will bubble anything else
                 }
             }
         }
@@ -144,11 +142,7 @@ class JSONSerializer extends Serializer
 
         foreach ($breadth as $key => $value) {
             foreach ($value as $instance) {
-                if (true === is_array($instance)) {
-                    $propertyData[] = $this->arrayToObject($instance);
-                } else {
-                    $propertyData[] = $instance;
-                }
+                $propertyData[] = $this->arrayToObject($instance);
             }
 
             try {
@@ -156,8 +150,7 @@ class JSONSerializer extends Serializer
                 $property->setAccessible(true);
                 $property->setValue($object, $propertyData);
             } catch (\ReflectionException $e) {
-                //Non property so we ignore this
-                throw $e;
+                // Non property so we ignore this will bubble anything else
             }
         }
 

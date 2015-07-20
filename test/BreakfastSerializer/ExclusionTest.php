@@ -30,7 +30,7 @@ class ExclusionTest extends \PHPUnit_Framework_TestCase
         $this->serializer = SerializerFactory::getSerializer(
             Serializer::FORMAT_JSON,
             Serializer::MAX_DEPTH_NOT_SET,
-            'test/config/exclusions'
+            'test/config'
         );
     }
 

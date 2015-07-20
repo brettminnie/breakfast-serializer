@@ -2,23 +2,25 @@
 
 namespace BDBStudios\BreakfastSerializer;
 
+use BDBStudios\BreakfastSerializer\Property\ConfigurableProperty;
+use BDBStudios\BreakfastSerializer\Property\ExcludableProperty;
+use BDBStudios\BreakfastSerializer\Property\IsConfigurable;
+use BDBStudios\BreakfastSerializer\Property\IsDepthTraversable;
+use BDBStudios\BreakfastSerializer\Property\IsExcludable;
+use BDBStudios\BreakfastSerializer\Property\IsMappable;
+use BDBStudios\BreakfastSerializer\Property\MappableProperty;
+use BDBStudios\BreakfastSerializer\Property\DepthTraversableProperty;
+
 /**
  * Class Serializer
  * @package BDBStudios\BreakfastSerializer
  */
-abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable, IsExcludable
+abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable, IsExcludable, IsMappable
 {
     use ConfigurableProperty;
-
-    /**
-     * @var int
-     */
-    protected $maxDepth;
-
-    /**
-     * @var int
-     */
-    protected $currentDepth;
+    use MappableProperty;
+    use ExcludableProperty;
+    use DepthTraversableProperty;
 
     /**
      * @var int
@@ -48,81 +50,6 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
     public function getFormat()
     {
         return $this->format;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setDepth($maxDepth)
-    {
-        if ($maxDepth !== self::MAX_DEPTH_NOT_SET) {
-            if (false === is_int($maxDepth)) {
-                throw new \LogicException(__CLASS__ . '::' . __FUNCTION__ . ' expects an int but a ' . gettype($maxDepth) . ' was supplied');
-            } elseif ($maxDepth <= 0) {
-                throw new \LogicException('The maximum depth should be non zero, non negative');
-            }
-        }
-
-        $this->maxDepth = $maxDepth;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDepth()
-    {
-        return $this->maxDepth;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function incrementCurrentDepth()
-    {
-        $this->currentDepth++;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function decrementCurrentDepth()
-    {
-        $this->currentDepth =
-            (1 <= $this->currentDepth) ? 1 : $this->currentDepth = 1;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCurrentDepth()
-    {
-        return $this->currentDepth;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function resetCurrentDepth()
-    {
-        $this->currentDepth = 1;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function isWithinBounds()
-    {
-        $isValid = (self::MAX_DEPTH_NOT_SET === $this->maxDepth)
-            ? true : ($this->currentDepth <= $this->maxDepth)
-                ? true : false;
-
-        return $isValid;
     }
 
     /**
@@ -158,23 +85,69 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
     }
 
     /**
-     * @param string $propertyName
-     * @param string $className
+     * @param array  $objAsArray
+     * @param array  $data
+     * @param bool   $exposeClassName
+     * @param object $baseObject
+     * @param string $currentClassName
+     */
+    abstract protected function iterateClassProperties(
+        array $objAsArray,
+        array& $data,
+        $exposeClassName,
+        $baseObject,
+        $currentClassName
+    );
+
+    /**
+     * @param array  $data
+     * @param object $baseObject
+     * @param string $currentClassName
+     * @param string $key
+     * @param mixed  $val
+     */
+    protected function SanitizeAndMapProperty(array& $data, $baseObject, $currentClassName, $key, $val)
+    {
+        $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
+        $this->includeClassProperty($data, $cleanedVariableName, $currentClassName, $val);
+        $this->mapClassProperty($data, $cleanedVariableName, $currentClassName, $val);
+    }
+
+    /**
+     * @param array  $data
+     * @param string $cleanedVariableName
+     * @param string $currentClassName
+     * @param mixed  $val
+     */
+    protected function mapClassProperty(array& $data, &$cleanedVariableName, $currentClassName, $val)
+    {
+        $configuration = $this->getConfiguration();
+
+        if ($this->isPropertyMappable(
+            $cleanedVariableName,
+            $currentClassName,
+            $configuration
+        )) {
+            $data[$configuration['mappings'][$currentClassName]['mappedVariables'][$cleanedVariableName]] = $val;
+            unset($data[$cleanedVariableName]);
+        }
+    }
+
+    /**
+     * @param array& $data
+     * @param string $cleanedVariableName
+     * @param string $currentClassName
+     * @param mixed  $val
      * @return bool
      */
-    public function isExcluded($propertyName, $className)
+    protected function includeClassProperty(array& $data, $cleanedVariableName, $currentClassName, $val)
     {
-        if (true === isset($this->getConfiguration()['exclusions'][$className]['excludeVariables'])) {
-
-            return array_key_exists(
-                $propertyName,
-                array_flip(
-                    $this->getConfiguration()['exclusions'][$className]['excludeVariables']
-                )
-            );
+        if (false === $this->isExcluded(
+            $cleanedVariableName,
+            $currentClassName,
+            $this->getConfiguration()
+        )) {
+            $data[$cleanedVariableName] = $val;
         }
-
-        return false;
-
     }
 }

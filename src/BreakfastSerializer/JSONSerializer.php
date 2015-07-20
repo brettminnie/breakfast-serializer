@@ -26,7 +26,7 @@ class JSONSerializer extends Serializer
      */
     public function deserialize($data)
     {
-        if (false === is_array($data)) {
+        if (true === is_string($data)) {
             $arrayData = json_decode($data, true);
         } elseif (null == $data) {
             $arrayData = array();
@@ -85,14 +85,15 @@ class JSONSerializer extends Serializer
         $object
     )
     {
-        foreach($data as $key=>$value) {
+        foreach ($this->remapArrayKeys($data, $object) as $key=>$value) {
+
             if (true === is_array($value) && false === array_key_exists('className', $value)) {
                 $breadth[$key] = $value;
             } else {
                 try {
                     $property = $reflection->getProperty($key);
                     $property->setAccessible(true);
-                    if (is_array($value) &&  true === array_key_exists('className', $value)) {
+                    if (is_array($value) && true === array_key_exists('className', $value)) {
                         $value = $this->arrayToObject($value);
                     }
                     $property->setValue($object, $value);
@@ -105,6 +106,26 @@ class JSONSerializer extends Serializer
         }
 
         return $object;
+    }
+
+    /**
+     * @param array $data
+     * @param       $object
+     * @return array
+     */
+    protected function remapArrayKeys(array $data, $object)
+    {
+        $remappedData = array();
+
+        foreach ($data as $key=>$value) {
+            if (true === $this->isPropertyMapped($key, get_class($object), $this->getConfiguration())) {
+                $newKey = $this->remapProperty($key, get_class($object), $this->getConfiguration());
+            } else {
+                $newKey = $key;
+            }
+            $remappedData[$newKey] = $value;
+        }
+        return $remappedData;
     }
 
     /**
@@ -123,14 +144,13 @@ class JSONSerializer extends Serializer
     {
         $propertyData = array();
 
-        foreach($breadth as $key => $value) {
+        foreach ($breadth as $key => $value) {
             foreach ($value as $instance) {
                 if (true === is_array($instance)) {
                     $propertyData[] = $this->arrayToObject($instance);
                 } else {
                     $propertyData[] = $instance;
                 }
-
             }
 
             try {
@@ -150,17 +170,17 @@ class JSONSerializer extends Serializer
      * @param mixed $baseObject
      * @param bool  $exposeClassName
      * @return array
+     *
      * @todo refactor this out somewhere once we start implementing in new formats
      */
     protected function objectToArray($baseObject, $exposeClassName = true)
     {
+        $currentClassName = '';
+        $data = array();
+
         if (false === is_array($baseObject)) {
             $currentClassName = get_class($baseObject);
-        } else {
-            $currentClassName = '';
         }
-
-        $data = array();
 
         if ($this->isWithinBounds()) {
             $this->incrementCurrentDepth();
@@ -168,21 +188,13 @@ class JSONSerializer extends Serializer
             $objAsArray = is_object($baseObject) ? (array)$baseObject : $baseObject;
 
             if (true === SerializerFactory::canIterate($objAsArray)) {
-                foreach ($objAsArray as $key => $val) {
-                    if (true === is_array($val) || true === is_object($val)) {
-                        $val = $this->objectToArray($val, $exposeClassName);
-                    }
-
-                    $cleanedVariableName = $this->cleanVariableName($key, $baseObject);
-
-                    if (false === $this->isExcluded($cleanedVariableName, $currentClassName)) {
-                        $data[$cleanedVariableName] = $val;
-                    }
-                }
-
-                if (true === $exposeClassName && is_object($baseObject)) {
-                    $data['className'] = get_class($baseObject);
-                }
+                $this->iterateClassProperties(
+                    $objAsArray,
+                    $data,
+                    $exposeClassName,
+                    $baseObject,
+                    $currentClassName
+                );
             }
 
             $this->decrementCurrentDepth();
@@ -191,4 +203,34 @@ class JSONSerializer extends Serializer
         return $data;
     }
 
+    /**
+     * @param array  $objAsArray
+     * @param array  $data
+     * @param bool   $exposeClassName
+     * @param object $baseObject
+     * @param string $currentClassName
+     *
+     * @internal
+     * @todo Look at param count and possibly refactor
+     */
+    protected function iterateClassProperties(
+        array $objAsArray,
+        array& $data,
+        $exposeClassName,
+        $baseObject,
+        $currentClassName
+    )
+    {
+        foreach ($objAsArray as $key => $val) {
+            if (true === is_array($val) || true === is_object($val)) {
+                $val = $this->objectToArray($val, $exposeClassName);
+            }
+
+            $this->SanitizeAndMapProperty($data, $baseObject, $currentClassName, $key, $val);
+        }
+
+        if (true === $exposeClassName && is_object($baseObject)) {
+            $data['className'] = get_class($baseObject);
+        }
+    }
 }

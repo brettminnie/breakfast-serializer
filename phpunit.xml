@@ -14,12 +14,13 @@
 >
     <testsuites>
         <testsuite name="BDBStudios Breakfast Serializer Test Suite">
-            <directory>./test</directory>
+            <directory suffix="Test.php">./test</directory>
+            <exclude>vendor</exclude>
         </testsuite>
     </testsuites>
     <blacklist>
-        <directory suffix=".php">./test</directory>
-        <directory suffix=".php">./vendor</directory>
+        <directory>vendor</directory>
+        <file>./test/bootstrap.php</file>
    </blacklist>
     <whitelist addUncoveredFilesFromWhitelist="true">
         <directory suffix=".php">./src</directory>

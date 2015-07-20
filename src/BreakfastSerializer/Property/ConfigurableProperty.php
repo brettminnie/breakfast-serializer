@@ -1,6 +1,6 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer;
+namespace BDBStudios\BreakfastSerializer\Property;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -23,8 +23,7 @@ trait ConfigurableProperty
     protected static $configurationData;
 
     /**
-     * @param string $pathName
-     * @return IsConfigurable
+     * @inheritdoc
      */
     public function setConfigurationPath($pathName = './config')
     {
@@ -34,7 +33,7 @@ trait ConfigurableProperty
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getConfigurationPath()
     {
@@ -42,8 +41,7 @@ trait ConfigurableProperty
     }
 
     /**
-     * @param string    $configurationKey
-     * @return boolean
+     * @inheritdoc
      */
     public function getConfiguration($configurationKey = null)
     {
@@ -57,9 +55,7 @@ trait ConfigurableProperty
     }
 
     /**
-     * @return IsConfigurable
-     * @throws \LogicException
-     * @throws ParseException
+     * @inheritdoc
      */
     public function loadConfiguration()
     {
@@ -68,19 +64,19 @@ trait ConfigurableProperty
         }
 
         self::$configurationData = array();
-        $iterator = new \DirectoryIterator($this->configurationPath);
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($this->configurationPath, \RecursiveDirectoryIterator::SKIP_DOTS)
+        );
 
         foreach ($iterator as $file) {
-            if (false === $file->isDot()) {
-                $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
+            $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
 
-                if (true === is_array($fileData)) {
-                    self::$configurationData =
-                        array_merge(
-                            self::$configurationData,
-                            $fileData
-                        );
-                }
+            if (true === is_array($fileData)) {
+                self::$configurationData =
+                    array_merge(
+                        self::$configurationData,
+                        $fileData
+                    );
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace BDBStudios\BreakfastSerializerTests;
 
-use BDBStudios\BreakfastSerializer\IsConfigurable;
+use BDBStudios\BreakfastSerializer\Property\IsConfigurable;
 use BDBStudios\BreakfastSerializerTest\Fixtures\ConfigurationStub;
 
 class ConfigurablePropertyTest extends \PHPUnit_Framework_TestCase

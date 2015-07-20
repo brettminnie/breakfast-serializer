@@ -28,10 +28,8 @@ class JSONSerializer extends Serializer
     {
         if (true === is_string($data)) {
             $arrayData = json_decode($data, true);
-        } elseif (null == $data) {
-            $arrayData = array();
         } else {
-            $arrayData = $data;
+            throw new \LogicException('Unsupported data type: String expected however ' . gettype($data) . ' received');
         }
 
         return $this->arrayToObject(

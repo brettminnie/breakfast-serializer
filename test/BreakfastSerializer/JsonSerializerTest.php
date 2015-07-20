@@ -103,7 +103,15 @@ class JsonSerializerTest extends \PHPUnit_Framework_TestCase
         $data = self::$instance->serialize($test);
         $data = json_decode($data, true);
         $this->assertNotEmpty($data['simpleArray']);
+    }
 
-
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Unsupported data type: String expected however array received
+     */
+    public function testDeserializeArrayThrowsException()
+    {
+        $data = array();
+        self::$instance->deserialize($data);
     }
 }

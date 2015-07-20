@@ -34,6 +34,12 @@ class ExclusionClass
         $this->internalProperty = 'Should not be set';
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     *
+     * @codeCoverageIgnore
+     */
     public function __get($name)
     {
         if (property_exists(get_class($this), $name)) {

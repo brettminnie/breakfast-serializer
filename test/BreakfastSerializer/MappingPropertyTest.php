@@ -160,4 +160,34 @@ class MappingPropertyTest extends \PHPUnit_Framework_TestCase
             $this->serializer->deserialize(self::$serializedMappedInstance)
         );
     }
+
+    public function testRemapPropertyOnNonMappedPropertyReturnsProperty()
+    {
+        $expectedProperty = 'propertyOne';
+
+        $this->assertEquals(
+            $expectedProperty,
+            $this->instance->remapProperty(
+                $expectedProperty,
+                get_class($this->instance),
+                $this->serializer->getConfiguration()
+            )
+        );
+    }
+
+    public function testMapProperty()
+    {
+        $initialProperty = 'mappedPropertyOne';
+        $expectedProperty = 'propertyThree';
+
+        $mappedInstance = $this->instance->mapProperty(
+            $initialProperty,
+            $this->serializer->getConfiguration()
+        );
+
+        $mappedArray = (array)$mappedInstance;
+
+        $this->assertArrayHasKey($expectedProperty, $mappedArray);
+        $this->assertArrayNotHasKey('*' .  $initialProperty, $mappedArray);
+    }
 }

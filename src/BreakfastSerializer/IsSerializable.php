@@ -24,6 +24,8 @@ interface IsSerializable
     /**
      * @param string $data
      * @return object
+     *
+     * @throws \LogicException
      */
     public function deserialize($data);
 }

@@ -85,11 +85,11 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
     }
 
     /**
-     * @param array $objAsArray
-     * @param array $data
-     * @param       $exposeClassName
-     * @param       $baseObject
-     * @param       $currentClassName
+     * @param array  $objAsArray
+     * @param array  $data
+     * @param bool   $exposeClassName
+     * @param object $baseObject
+     * @param string $currentClassName
      */
     abstract protected function iterateClassProperties(
         array $objAsArray,
@@ -100,11 +100,11 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
     );
 
     /**
-     * @param array $data
-     * @param       $baseObject
-     * @param       $currentClassName
-     * @param       $key
-     * @param       $val
+     * @param array  $data
+     * @param object $baseObject
+     * @param string $currentClassName
+     * @param string $key
+     * @param mixed  $val
      */
     protected function SanitizeAndMapProperty(array& $data, $baseObject, $currentClassName, $key, $val)
     {
@@ -114,10 +114,10 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
     }
 
     /**
-     * @param array $data
-     * @param       $cleanedVariableName
-     * @param       $currentClassName
-     * @param       $val
+     * @param array  $data
+     * @param string $cleanedVariableName
+     * @param string $currentClassName
+     * @param mixed  $val
      */
     protected function mapClassProperty(array& $data, &$cleanedVariableName, $currentClassName, $val)
     {

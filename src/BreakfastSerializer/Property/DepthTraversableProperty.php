@@ -1,6 +1,5 @@
 <?php
 
-
 namespace BDBStudios\BreakfastSerializer\Property;
 
 /**
@@ -82,18 +81,19 @@ trait DepthTraversableProperty
         $this->currentDepth = 1;
     }
 
-
     /**
      * @inheritdoc
      */
     public function isWithinBounds()
     {
-        $isValid = (self::MAX_DEPTH_NOT_SET === $this->maxDepth)
-            ? true : ($this->currentDepth <= $this->maxDepth)
-                ? true : false;
+        if (self::MAX_DEPTH_NOT_SET === $this->maxDepth) {
+            return true;
+        }
 
-        return $isValid;
+        if ($this->currentDepth <= $this->maxDepth) {
+            return true;
+        }
+
+        return false;
     }
-
-
 }

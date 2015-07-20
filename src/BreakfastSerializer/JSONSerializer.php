@@ -170,6 +170,7 @@ class JSONSerializer extends Serializer
      * @param mixed $baseObject
      * @param bool  $exposeClassName
      * @return array
+     *
      * @todo refactor this out somewhere once we start implementing in new formats
      */
     protected function objectToArray($baseObject, $exposeClassName = true)
@@ -203,11 +204,14 @@ class JSONSerializer extends Serializer
     }
 
     /**
-     * @param array $objAsArray
-     * @param array $data
-     * @param       $exposeClassName
-     * @param       $baseObject
-     * @param       $currentClassName
+     * @param array  $objAsArray
+     * @param array  $data
+     * @param bool   $exposeClassName
+     * @param object $baseObject
+     * @param string $currentClassName
+     *
+     * @internal
+     * @todo Look at param count and possibly refactor
      */
     protected function iterateClassProperties(
         array $objAsArray,

@@ -25,7 +25,15 @@
     <whitelist addUncoveredFilesFromWhitelist="true">
         <directory suffix=".php">./src</directory>
     </whitelist>
-
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory>./vendor</directory>
+                <directory>./tests</directory>
+            </exclude>
+        </whitelist>
+    </filter>
     <groups>
         <exclude>
             <group>performance</group>

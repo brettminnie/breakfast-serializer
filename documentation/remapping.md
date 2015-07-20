@@ -53,3 +53,5 @@ These are all loaded during creation time and will be automatically applied by t
 ### Further examples 
 
 See [MappingPropertyTest](../test/BreakfastSerializer/MappingPropertyTest.php) for further examples
+=======
+{{includes/menu.md}}

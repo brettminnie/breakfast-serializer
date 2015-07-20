@@ -20,7 +20,7 @@ Job done, start enjoying your morning serial!
 
 =======
 A replacement for the other well known serializer, initially we where aiming for backwards compatibility, however it seemed
-more appropriate to develop a lightweight alternative. We are forgoing the feature depth now to offer something that is
+more appropriate to develop a lightweight alternative. We are forgoing the depth of features now to offer something that is
 easy to configure and works with no configuration.
 
 ### Configuration
@@ -33,10 +33,16 @@ object.
 
 ### Supported Serialization Formats
 - [x] JSON
-- [ ]  XML
-- [ ]  PHP Object Notation
-- [ ]  YAML
+- [ ] XML
+- [ ] PHP Object Notation
+- [ ] YAML
 
+### Features
+ - [x] Simple limiting of traversal depth
+ - [x] Mapping of properties to alternate names and back again
+ - [x] Excluding of properties from serialization and ignoring them on deserialization
+ - [x] Simple YAML config format (Yay no slow php annotations!)
+ 
 Quick and Dirty Example
 ```php
    

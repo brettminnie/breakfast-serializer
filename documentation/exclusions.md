@@ -53,3 +53,5 @@ These are all loaded during creation time and will be automatically applied by t
 ### Further examples 
 
 See [ExclusionTest](../test/BreakfastSerializer/ExclusionTEst.php) for further examples
+=======
+{{includes/menu.md}}

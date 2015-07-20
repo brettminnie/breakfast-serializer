@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/brettminnie/breakfast-serializer/badge.svg?branch=master&service=github)](https://coveralls.io/github/brettminnie/breakfast-serializer?branch=master)
 
 A replacement for the other well known serializer, initially we where aiming for backwards compatibility, however it seemed
-more appropriate to develop a lightweight alternative. We are forgoing the feature depth now to offer something that is
+more appropriate to develop a lightweight alternative. We are forgoing the depth of features now to offer something that is
 easy to configure and works with no configuration.
 
 ### Configuration
@@ -18,10 +18,16 @@ object.
 
 ### Supported Serialization Formats
 - [x] JSON
-- [ ]  XML
-- [ ]  PHP Object Notation
-- [ ]  YAML
+- [ ] XML
+- [ ] PHP Object Notation
+- [ ] YAML
 
+### Features
+ - [x] Simple limiting of traversal depth
+ - [x] Mapping of properties to alternate names and back again
+ - [x] Excluding of properties from serialization and ignoring them on deserialization
+ - [x] Simple YAML config format (Yay no slow php annotations!)
+ 
 Quick and Dirty Example
 ```php
    
@@ -34,7 +40,7 @@ Quick and Dirty Example
    $myClass = BDBStudios\BreakfastSerializer\SerializerFactory:::getSerializer()
         ->deserialize($jsonData);
    
-   //To serialize an object with a limited depth recursion
+   //To serialize an object with a limited depth recursion (aka only some of it)
    $jsonData = 
       BDBStudios\BreakfastSerializer\SerializerFactory::getSerializer(
          IsSerializable::FORMAT_JSON,
@@ -43,5 +49,7 @@ Quick and Dirty Example
       ->serialize($myClass);
     
 ```
+
+Further examples in the [documentation](documentation/index.md) directory.
 
 

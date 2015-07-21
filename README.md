@@ -5,9 +5,9 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/55378b007f43bcd88900033d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55378b007f43bcd88900033d)
 [![Coverage Status](https://coveralls.io/repos/brettminnie/breakfast-serializer/badge.svg?branch=master&service=github)](https://coveralls.io/github/brettminnie/breakfast-serializer?branch=master)
 
-A replacement for the other well known serializer, initially we where aiming for backwards compatibility, however it seemed
+A replacement for the other well known serializer, initially we were aiming for backwards compatibility, however it seemed
 more appropriate to develop a lightweight alternative. We are forgoing the depth of features now to offer something that is
-easy to configure and works with no configuration.
+easy to configure and works well without any configuration.
 
 ### Installation
 

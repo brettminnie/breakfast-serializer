@@ -23,6 +23,12 @@ A replacement for the other well known serializer, initially we where aiming for
 more appropriate to develop a lightweight alternative. We are forgoing the depth of features now to offer something that is
 easy to configure and works with no configuration.
 
+### Installation
+
+`$ composer require brettminnie/breakfast-serializer` 
+
+Job done, start enjoying your morning serial!
+
 ### Configuration
 
 >>>>>>> Updated readme

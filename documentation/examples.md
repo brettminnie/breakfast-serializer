@@ -26,6 +26,8 @@
     </span>
 </nav>
 
+* auto-gen TOC:
+{:toc}
 
 ### Serialization of an object
 
@@ -46,7 +48,7 @@
         public function __construct()
         {
             $this->name = 'SimpleClass Instance';
-            $this->uid = uniqid();
+            $this->uid = 'SimpleClassInstance00001';
         }
     }
     
@@ -60,11 +62,11 @@
 
 This will render 
 
-```JSON
+```javascript
     
     {
         'name':'SimpleClass Instance',
-        'uid' : '<random uid string>',
+        'uid' : 'SimpleClassInstance00001',
         'className' : 'SimpleClass'
     }
 
@@ -76,7 +78,7 @@ This will render
     
     $serializedInstance = "{
        'name':'SimpleClass Instance',
-       'uid' : '<random uid string>',
+       'uid' : 'SimpleClassInstance00001',
        'className' : 'SimpleClass'
     }";
     
@@ -88,3 +90,26 @@ This will render
 ```
 
 This will return an instance of SimpleObject and `get_class` will return 'SimpleObject'
+
+
+### Getting a new serializer
+
+The serializer is cached by default and will return the same configured instance. To change settings and get a new 
+instance of the serializer is quite a simple operation.
+
+```php
+
+    $serializer = SerializerFactory::getSerializer();
+    
+    // Do our serialization tasks
+    ...   
+    
+    // Now we want a new instance of the serializer with a limited depth recursion
+    // We call destroy to uncache the current instance
+    SerializerFactory::destroySerializer(); 
+    
+    $newSerializer = SerializerFactory::getSerializer(
+        
+    );
+    
+```

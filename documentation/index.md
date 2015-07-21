@@ -26,6 +26,9 @@
     </span>
 </nav>
 
+* auto-gen TOC:
+{:toc}
+
 ### Installation
 
 `$ composer require brettminnie/breakfast-serializer`
@@ -38,9 +41,13 @@ somewhat sensible defaults.
 ```php
 
     // These are mimicking the defaults
-    $serializerFormat = IsSerializable::FORMAT_JSON; // See IsSerializable for other options
-    $maxDepth = IsSerializable::MAX_DEPTH_NOT_SET; // This is -1, any positive number will be honoured for depth traversal
-    $configPath = './config'; // Path to the yaml config file route, this is loaded recursively
+
+    // See IsSerializable for other options
+    $serializerFormat = IsSerializable::FORMAT_JSON; 
+    // This is -1, any positive number will be honoured for depth traversal
+    $maxDepth = IsSerializable::MAX_DEPTH_NOT_SET; 
+    // Path to the yaml config files, these are loaded recursively into an array in the Serializer instance
+    $configPath = './config'; 
     
     $serializerInstance = SerializerFactory::getSerializer (
         $serializerFormat,

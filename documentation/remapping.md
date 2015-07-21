@@ -32,7 +32,11 @@ Sometimes we may wish to rename a property when being serialized as the returned
 api consumer or the consumer may not understand your naming conventions.
 
 Each class that requires properties to be remapped can be set up in a yaml file in the config directory. See 
+<<<<<<< HEAD
 [mappings.yml](../config/mappings/mappings.yml) for a simple example from our test suite. This is commented out as 
+=======
+[mappings.yml](../config/mappings/mappings.yml]) for a simple example from our test suite. This is commented out as 
+>>>>>>> Updated documents
 to not load into an actual running instance of the serializer, but the principle is sound.
 
 ```yml

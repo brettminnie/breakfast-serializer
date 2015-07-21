@@ -26,6 +26,9 @@
     </span>
 </nav>
 
+* auto-gen TOC:
+{:toc}
+
 ### Installation
 
 `$ composer require brettminnie/breakfast-serializer`

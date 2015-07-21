@@ -110,5 +110,3 @@ instance of the serializer is quite a simple operation.
     );
     
 ```
-=======
-{{includes/menu.md}}

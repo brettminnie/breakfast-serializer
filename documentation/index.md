@@ -55,5 +55,4 @@ somewhat sensible defaults.
 
 The serializer.yml file is not currently used, but at a later stage this will be autoloaded on creation to supply the 
 defaults if they are missing from the arguments see #23.
-=======
-{{includes/menu.md}}
+

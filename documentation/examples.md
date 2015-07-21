@@ -26,9 +26,6 @@
     </span>
 </nav>
 
-* auto-gen TOC:
-{:toc}
-
 ### Serialization of an object
 
 ```php

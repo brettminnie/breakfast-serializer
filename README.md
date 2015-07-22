@@ -36,12 +36,12 @@ easy to configure and works well without any configuration.
 Quick and Dirty Example
 ```php
    
-   // To retrieve the json representation json of an object
+    // To retrieve the json representation json of an object
     $jsonData = BDBStudios\BreakfastSerializer\SerializerFactory::getSerializer()
         ->serialize($myClass);
    
    // To unserialize
-   $myClass = BDBStudios\BreakfastSerializer\SerializerFactory:::getSerializer()
+   $myClass = BDBStudios\BreakfastSerializer\SerializerFactory::getSerializer()
         ->deserialize($jsonData);
    
    //To serialize an object with a limited depth recursion (aka only some of it)

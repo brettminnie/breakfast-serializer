@@ -3,6 +3,7 @@
 namespace BDBStudios\BreakfastSerializerTests;
 
 use BDBStudios\BreakfastSerializer\Serializer;
+use BDBStudios\BreakfastSerializerTest\Fixtures\ComplexClass;
 
 class SerializerTest extends \PHPUnit_Framework_TestCase
 {

@@ -6,6 +6,7 @@ use BDBStudios\BreakfastSerializer\IsSerializable;
 use BDBStudios\BreakfastSerializer\JSONSerializer;
 use BDBStudios\BreakfastSerializer\Serializer;
 use BDBStudios\BreakfastSerializer\SerializerFactory;
+use BDBStudios\BreakfastSerializerTest\Fixtures\ComplexClass;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleClass;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleContainer;
 
@@ -113,5 +114,14 @@ class JsonSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $data = array();
         self::$instance->deserialize($data);
+    }
+
+    public function testMoreComplexClassSerializes()
+    {
+        $instance = new ComplexClass();
+
+        $serializedInstance = self::$instance->serialize($instance);
+
+        $deserializedInstance = self::$instance->deserialize($serializedInstance);
     }
 }

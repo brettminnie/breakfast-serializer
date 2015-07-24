@@ -49,7 +49,7 @@ Quick and Dirty Example
    //To serialize an object with a limited depth recursion (aka only some of it)
    $jsonData = 
       BDBStudios\BreakfastSerializer\SerializerFactory::getSerializer(
-         IsSerializable::FORMAT_JSON,
+         BDBStudios\BreakfastSerializer\IsSerializable::FORMAT_JSON,
          2
       )
       ->serialize($myClass);

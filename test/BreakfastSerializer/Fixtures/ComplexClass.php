@@ -9,6 +9,16 @@ class ComplexClass extends SimpleClass
      */
     protected $dataStore;
 
+    /**
+     * @var
+     */
+    protected $numArray;
+
+    /**
+     * @var
+     */
+    protected $assocArray;
+
     public function __construct()
     {
         parent::__construct();
@@ -21,5 +31,10 @@ class ComplexClass extends SimpleClass
             'dateInfo'  => new \DateTime(),
             'classInfo' => new SimpleClass()
         );
+
+        for ($i=0; $i<5; ++$i) {
+            $this->assocArray['position_' . $i] = $i;
+            $this->numArray[] = $i;
+        }
     }
 }

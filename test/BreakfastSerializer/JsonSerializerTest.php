@@ -123,5 +123,7 @@ class JsonSerializerTest extends \PHPUnit_Framework_TestCase
         $serializedInstance = self::$instance->serialize($instance);
 
         $deserializedInstance = self::$instance->deserialize($serializedInstance);
+
+        $this->assertEquals($instance->__get('dataStore'), $deserializedInstance->__get('dataStore'));
     }
 }

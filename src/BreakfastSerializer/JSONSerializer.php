@@ -141,11 +141,11 @@ class JSONSerializer extends Serializer
         $propertyData = array();
 
         foreach ($breadth as $key => $value) {
-            foreach ($value as $instance) {
-                if (true === is_array($instance)) {
-                    $propertyData[] = $this->arrayToObject($instance);
+            foreach ($value as $instanceKey => $instanceData) {
+                if (true === is_array($instanceData)) {
+                    $propertyData[$instanceKey] = $this->arrayToObject($instanceData);
                 } else {
-                    $propertyData[] = $instance;
+                    $propertyData[$instanceKey] = $instanceData;
                 }
             }
 

@@ -75,7 +75,11 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
         if (true === is_object($containingClass)) {
             $className = get_class($containingClass);
         } elseif (true === is_array($containingClass)) {
-            $className = get_class(array_pop($containingClass));
+            foreach ($containingClass as $item) {
+                if (true === is_object($item)) {
+                    $className = get_class($item);
+                }
+             }
         }
 
         $cleanedName = str_replace('*', '', $variableName);

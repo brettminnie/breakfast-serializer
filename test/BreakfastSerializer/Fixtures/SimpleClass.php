@@ -23,4 +23,17 @@ class SimpleClass
         $this->name = 'SimpleClass Instance';
         $this->uid = uniqid();
     }
+
+    /**
+     * @param $name
+     * @return mixed
+     *
+     * @codeCoverageIgnore
+     */
+    public function __get($name)
+    {
+        if (property_exists(get_class($this), $name)) {
+            return $this->{$name};
+        }
+    }
 }

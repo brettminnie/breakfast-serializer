@@ -7,6 +7,7 @@ use BDBStudios\BreakfastSerializer\JSONSerializer;
 use BDBStudios\BreakfastSerializer\Serializer;
 use BDBStudios\BreakfastSerializer\SerializerFactory;
 use BDBStudios\BreakfastSerializerTest\Fixtures\ComplexClass;
+use BDBStudios\BreakfastSerializerTest\Fixtures\ConstructorWithArgumentsClass;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleClass;
 use BDBStudios\BreakfastSerializerTest\Fixtures\SimpleContainer;
 
@@ -125,5 +126,20 @@ class JsonSerializerTest extends \PHPUnit_Framework_TestCase
         $deserializedInstance = self::$instance->deserialize($serializedInstance);
 
         $this->assertEquals($instance->__get('dataStore'), $deserializedInstance->__get('dataStore'));
+    }
+
+    public function testConstructorWithArgumentsIsCorrectlyHandled()
+    {
+        $expected = 'This is a test string value';
+        $instance =  new ConstructorWithArgumentsClass($expected);
+
+        $this->assertEquals($expected, $instance->__get('someValue'));
+
+        $serializedInstance = self::$instance->serialize($instance);
+
+        $deserializedInstance = self::$instance->deserialize($serializedInstance);
+
+        $this->assertEquals($instance->__get('someValue'), $deserializedInstance->__get('someValue'));
+
     }
 }

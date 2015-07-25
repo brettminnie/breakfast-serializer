@@ -57,8 +57,15 @@ class JSONSerializer extends Serializer
      */
     protected function arrayToObject(array $data)
     {
-        $object     = new $data['className']();
+
         $reflection = new \ReflectionClass($data['className']);
+
+        if (false === $reflection->isInternal()) {
+            $object = $reflection->newInstanceWithoutConstructor();
+        } else {
+            $object = $reflection->newInstance();
+        }
+
         $breadth    = array();
 
         $object = $this->extractAndSetSingleDepthProperties($data, $breadth, $reflection, $object);

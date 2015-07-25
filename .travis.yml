@@ -9,6 +9,11 @@ php:
   - 5.6
   - 7.0
 
+branches:
+  only:
+    - master
+    - develop
+
 install:
   - composer require satooshi/php-coveralls:~0.6@stable
 

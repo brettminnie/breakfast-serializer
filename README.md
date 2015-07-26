@@ -11,7 +11,7 @@ easy to configure and works well without any configuration.
 
 ### Installation
 
-`$ composer require brettminnie/breakfast-serializer` 
+`$ composer require brettminnie/breakfast-serializer:0.1.*` 
 
 Job done, start enjoying your morning serial!
 

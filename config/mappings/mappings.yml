@@ -1,0 +1,7 @@
+# Example Remappings
+#
+#mappings:
+#  BDBStudios\BreakfastSerializerTest\Fixtures\MappingClass:
+#    mappedVariables:
+#      - mappedPropertyOne: 'propertyThree'
+#      - mappedPropertyTwo: 'propertyFour'

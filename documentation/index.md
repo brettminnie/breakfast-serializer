@@ -37,6 +37,9 @@ somewhat sensible defaults.
 
 ```php
 
+    use BDBStudios\BreakfastSerializer\SerializerFactory;
+    use BDBStudios\BreakfastSerializer\IsSerializable;
+    
     // These are mimicking the defaults
     // See IsSerializable for other options
     $serializerFormat = IsSerializable::FORMAT_JSON; 

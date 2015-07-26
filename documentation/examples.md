@@ -29,7 +29,9 @@
 ### Serialization of an object
 
 ```php
-
+    
+    use BDBStudios\BreakfastSerializer\SerializerFactory;
+    
     class SimpleClass
     {
         /**
@@ -73,6 +75,8 @@ This will render
 
 ```php
     
+    use BDBStudios\BreakfastSerializer\SerializerFactory;
+    
     $serializedInstance = "{
        'name':'SimpleClass Instance',
        'uid' : 'SimpleClassInstance00001',
@@ -96,6 +100,8 @@ instance of the serializer is quite a simple operation.
 
 ```php
 
+    use BDBStudios\BreakfastSerializer\SerializerFactory;
+    
     $serializer = SerializerFactory::getSerializer();
     
     // Do our serialization tasks

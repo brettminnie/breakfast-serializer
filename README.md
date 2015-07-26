@@ -17,9 +17,10 @@ Job done, start enjoying your morning serial!
 
 ### Configuration
 
-A replacement for the other well known serializer, initially we were aiming for backwards compatibility, however it seemed
-more appropriate to develop a lightweight alternative. We are forgoing the depth of features now to offer something that is
-easy to configure and works well without any configuration.
+Out the box will do a full depth/breadth recursion and serialize to JSON format, no config is required. It will always 
+serialize with a variable called `className` attached to the object. This is a fully fledged namespace and is required
+to deserialize. If you want to deserialize from JSON data that is missing this variable it needs to be injected into the
+object.
 
 ### Supported Serialization Formats
 - [x] JSON
@@ -55,5 +56,4 @@ Quick and Dirty Example
 ```
 
 Further examples in the [documentation](documentation/index.md) directory.
-
 

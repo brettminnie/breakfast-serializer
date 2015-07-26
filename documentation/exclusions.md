@@ -32,15 +32,7 @@ Sometimes you do not wish data to be returned in the serialized object, nor to b
 We have implemented a simple way to exclude data, this currently works both ways so if a property is excluded, that's it.
 
 Each class that requires properties to be excluded can be set up in a yaml file in the config directory. See 
-<<<<<<< HEAD
-<<<<<<< HEAD
 [exclusions.yml](../config/exclusions/exclusions.yml) for a simple example from our test suite. This is commented out as 
-=======
-[exclusions.yml](../config/exclusions/exclusions.yml]) for a simple example from our test suite. This is commented out as 
->>>>>>> Updated documents
-=======
-[exclusions.yml](../config/exclusions/exclusions.yml) for a simple example from our test suite. This is commented out as 
->>>>>>> Fixed broken links
 to not load into an actual running instance of the serializer, but the principle is sound.
 
 ```yml

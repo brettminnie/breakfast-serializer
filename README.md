@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/brettminnie/breakfast-serializer.svg)](https://travis-ci.org/brettminnie/breakfast-serializer)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/brettminnie/breakfast-serializer/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/brettminnie/breakfast-serializer/?branch=develop)
 [![Dependency Status](https://www.versioneye.com/user/projects/55378b007f43bcd88900033d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55378b007f43bcd88900033d)
-[![Coverage Status](https://coveralls.io/repos/brettminnie/breakfast-serializer/badge.svg?branch=master&service=github)](https://coveralls.io/github/brettminnie/breakfast-serializer?branch=master)
+[![Coverage Status](https://coveralls.io/repos/brettminnie/breakfast-serializer/badge.svg?branch=develop&service=github)](https://coveralls.io/github/brettminnie/breakfast-serializer?branch=develop)
 
 A replacement for the other well known serializer, initially we were aiming for backwards compatibility, however it seemed
 more appropriate to develop a lightweight alternative. We are forgoing the depth of features now to offer something that is

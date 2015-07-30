@@ -10,17 +10,20 @@ use BDBStudios\BreakfastSerializer\Property\IsExcludable;
 use BDBStudios\BreakfastSerializer\Property\IsMappable;
 use BDBStudios\BreakfastSerializer\Property\MappableProperty;
 use BDBStudios\BreakfastSerializer\Property\DepthTraversableProperty;
+use BDBStudios\BreakfastSerializer\Property\TypeHandler\IsDateTime;
+use BDBStudios\BreakfastSerializer\Property\TypeHandler\DateTimeHandler;
 
 /**
  * Class Serializer
  * @package BDBStudios\BreakfastSerializer
  */
-abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable, IsExcludable, IsMappable
+abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable, IsExcludable, IsMappable, IsDateTime
 {
     use ConfigurableProperty;
     use MappableProperty;
     use ExcludableProperty;
     use DepthTraversableProperty;
+    use DateTimeHandler;
 
     /**
      * @var int
@@ -153,5 +156,30 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
         )) {
             $data[$cleanedVariableName] = $val;
         }
+    }
+
+    /**
+     * @param  mixed $val
+     * @return mixed
+     */
+    protected function mapTypes($val)
+    {
+        $val = $this->mapDateTimeType($val);
+
+        return $val;
+    }
+    /**
+     * @param  mixed $val
+     * @return mixed
+     */
+    protected function mapDateTimeType($val)
+    {
+        $isEnabled = DateTimeHandler::isEnabledInConfiguration($this->getConfiguration('serializer'));
+
+        if (true === $isEnabled && $this->isDateTime($val)) {
+            $val = $this->toISO8601Format($val);
+        }
+
+        return $val;
     }
 }

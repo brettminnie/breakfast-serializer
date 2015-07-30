@@ -8,7 +8,9 @@ namespace BDBStudios\BreakfastSerializer\Property\TypeHandler;
  */
 interface IsDateTime
 {
-    const ISO_STRING = '/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})((-|\+)\d{4})$/';
+    const ISO_STRING = '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(-|\+)\d{4}$/';
+
+    const CONFIGURATION_KEY  = 'dateTime';
 
     /**
      * @param  mixed $value
@@ -33,4 +35,10 @@ interface IsDateTime
      * @return \DateTime
      */
     public function fromISO8601Format($value);
+
+    /**
+     * @param array $configurationData
+     * @return bool
+     */
+    public static function isEnabledInConfiguration(array $configurationData);
 }

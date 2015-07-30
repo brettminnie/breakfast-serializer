@@ -11,7 +11,7 @@ class DateTimeHandler extends \PHPUnit_Framework_TestCase
     /** @var  DateTimeType */
     protected $instance;
 
-    const ISO_REGEX = '/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})((-|\+)\d{4})$/';
+    const ISO_REGEX = '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(-|\+)\d{4}$/';
 
     public function setUp()
     {

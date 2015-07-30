@@ -2,6 +2,10 @@
 
 namespace BDBStudios\BreakfastSerializer\Property\TypeHandler;
 
+/**
+ * Class DateTimeHandler
+ * @package BDBStudios\BreakfastSerializer\Property\TypeHandler
+ */
 trait DateTimeHandler
 {
     /**
@@ -39,5 +43,17 @@ trait DateTimeHandler
     public function fromISO8601Format($value)
     {
         return \DateTime::createFromFormat(\DateTime::ISO8601, $value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function isEnabledInConfiguration(array $configurationData)
+    {
+        return (
+            isset($configurationData['typeHandler'][IsDateTime::CONFIGURATION_KEY])
+                &&
+            $configurationData['typeHandler'][IsDateTime::CONFIGURATION_KEY]
+        );
     }
 }

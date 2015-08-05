@@ -3,6 +3,7 @@
 namespace BDBStudios\BreakfastSerializerTests\Plugin;
 
 use BDBStudios\BreakfastSerializer\Plugin\PluginAbstract;
+use BDBStudios\BreakfastSerializer\Plugin\PluginNotFoundException;
 use BDBStudios\BreakfastSerializer\Plugin\PluginRegistry;
 
 /**
@@ -78,11 +79,13 @@ class PluginRegistryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException PluginNotFoundException
+     */
     public function testICanRemoveAPluginFromTheRegistry()
     {
         $this->assertTrue(PluginRegistry::isRegistered($this->activePluginInstance));
         $this->assertTrue(PluginRegistry::unregisterPlugin($this->activePluginInstance) instanceof PluginAbstract);
         $this->assertFalse(PluginRegistry::isRegistered($this->activePluginInstance));
-        $this->assertNull(PluginRegistry::getPlugin($this->activePluginInstance->getName()));
     }
 }

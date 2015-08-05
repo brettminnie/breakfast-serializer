@@ -56,8 +56,9 @@ final class PluginRegistry
     }
 
     /**
-     * @param  string $pluginName
-     * @return PluginAbstract|null
+     * @param $pluginName
+     * @return mixed
+     * @throws PluginNotFoundException
      */
     public static function getPlugin($pluginName)
     {
@@ -65,7 +66,12 @@ final class PluginRegistry
             return self::$data[$pluginName];
         }
 
-        return null;
+        throw new PluginNotFoundException(
+            sprintf(
+                'The plugin %s was not found in the registry',
+                $pluginName
+            )
+        );
     }
 
     /**

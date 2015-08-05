@@ -22,6 +22,7 @@ final class PluginRegistry
         if ($plugin instanceof PluginAbstract) {
             $plugin = $plugin->getName();
         }
+
         return array_key_exists($plugin, self::$data);
     }
 

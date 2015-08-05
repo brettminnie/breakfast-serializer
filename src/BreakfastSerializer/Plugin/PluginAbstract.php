@@ -6,7 +6,7 @@ namespace BDBStudios\BreakfastSerializer\Plugin;
  * Class PluginAbstract
  * @package BDBStudios\BreakfastSerializer\Plugin
  */
-abstract class PluginAbstract implements IsPlugin
+abstract class PluginAbstract implements PluginInterface
 {
     /**
      * @var bool

@@ -3,28 +3,28 @@
 namespace BDBStudios\BreakfastSerializer\Plugin;
 
 /**
- * Interface IsPlugin
+ * Interface PluginInterface
  * @package BDBStudios\BreakfastSerializer\Plugin
  */
-interface IsPlugin
+interface PluginInterface
 {
     /**
-     * @return IsPlugin
+     * @return PluginInterface
      */
     public function register();
 
     /**
-     * @return IsPlugin
+     * @return PluginInterface
      */
     public function unregister();
 
     /**
-     * @return IsPlugin
+     * @return PluginInterface
      */
     public function activate();
 
     /**
-     * @return IsPlugin
+     * @return PluginInterface
      */
     public function deactivate();
 
@@ -34,7 +34,7 @@ interface IsPlugin
     public function isActive();
 
     /**
-     * @return IsPlugin
+     * @return PluginInterface
      */
     public function execute();
 

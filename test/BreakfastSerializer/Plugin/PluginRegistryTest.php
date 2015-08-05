@@ -3,7 +3,6 @@
 namespace BDBStudios\BreakfastSerializerTests\Plugin;
 
 use BDBStudios\BreakfastSerializer\Plugin\PluginAbstract;
-use BDBStudios\BreakfastSerializer\Plugin\PluginNotFoundException;
 use BDBStudios\BreakfastSerializer\Plugin\PluginRegistry;
 
 /**
@@ -53,12 +52,12 @@ class PluginRegistryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             get_class($this->activePluginInstance),
-            PluginRegistry::getPlugin($this->activePluginInstance->getName())['classPath']
+            PluginRegistry::getPlugin($this->activePluginInstance)['classPath']
         );
 
         $this->assertEquals(
             $this->activePluginInstance->isActive(),
-            PluginRegistry::getPlugin($this->activePluginInstance->getName())['active']
+            PluginRegistry::getPlugin($this->activePluginInstance)['active']
         );
     }
 
@@ -70,22 +69,22 @@ class PluginRegistryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             get_class($this->inactivePluginInstance),
-            PluginRegistry::getPlugin($this->inactivePluginInstance->getName())['classPath']
+            PluginRegistry::getPlugin($this->inactivePluginInstance)['classPath']
         );
 
         $this->assertEquals(
             $this->activePluginInstance->isActive(),
-            PluginRegistry::getPlugin($this->inactivePluginInstance->getName())['active']
+            PluginRegistry::getPlugin($this->inactivePluginInstance)['active']
         );
     }
 
     /**
-     * @expectedException PluginNotFoundException
+     * @@expectedException \BDBStudios\BreakfastSerializer\Plugin\PluginNotFoundException
      */
     public function testICanRemoveAPluginFromTheRegistry()
     {
         $this->assertTrue(PluginRegistry::isRegistered($this->activePluginInstance));
         $this->assertTrue(PluginRegistry::unregisterPlugin($this->activePluginInstance) instanceof PluginAbstract);
-        $this->assertFalse(PluginRegistry::isRegistered($this->activePluginInstance));
+        $this->assertFalse(PluginRegistry::getPlugin($this->activePluginInstance));
     }
 }

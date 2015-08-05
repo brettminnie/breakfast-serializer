@@ -14,16 +14,12 @@ final class PluginRegistry
     protected static $data = array();
 
     /**
-     * @param string|PluginAbstract $plugin
+     * @param PluginAbstract $plugin
      * @return bool
      */
-    public static function isRegistered($plugin)
+    public static function isRegistered(PluginAbstract $plugin)
     {
-        if ($plugin instanceof PluginAbstract) {
-            $plugin = $plugin->getName();
-        }
-
-        return array_key_exists($plugin, self::$data);
+        return array_key_exists($plugin->getName(), self::$data);
     }
 
     /**
@@ -43,7 +39,7 @@ final class PluginRegistry
     }
 
     /**
-     * @param PluginAbstract  $plugin
+     * @param PluginAbstract $plugin
      * @return PluginAbstract
      */
     public static function unregisterPlugin(PluginAbstract $plugin)
@@ -56,20 +52,20 @@ final class PluginRegistry
     }
 
     /**
-     * @param $pluginName
-     * @return mixed
+     * @param  PluginAbstract $plugin
+     * @return PluginAbstract
      * @throws PluginNotFoundException
      */
-    public static function getPlugin($pluginName)
+    public static function getPlugin(PluginAbstract $plugin)
     {
-        if (true === self::isRegistered($pluginName)) {
-            return self::$data[$pluginName];
+        if (true === self::isRegistered($plugin)) {
+            return self::$data[$plugin->getName()];
         }
 
         throw new PluginNotFoundException(
             sprintf(
                 'The plugin %s was not found in the registry',
-                $pluginName
+                $plugin->getName()
             )
         );
     }

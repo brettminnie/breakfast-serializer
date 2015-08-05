@@ -10,6 +10,7 @@ class PluginAbstractTest extends \PHPUnit_Framework_TestCase
     /** @var  PluginAbstract */
     protected $instance;
 
+    /** @var string  */
     protected $pluginName;
 
     public function __construct()

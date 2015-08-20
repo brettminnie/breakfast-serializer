@@ -1,12 +1,14 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer\Property\TypeHandler;
+namespace BDBStudios\BreakfastSerializer\Plugin\DateTime;
+
+use BDBStudios\BreakfastSerializer\Plugin\PluginInterface;
 
 /**
  * Class DateTimeHandler
- * @package BDBStudios\BreakfastSerializer\Property\TypeHandler
+ * @package BDBStudios\BreakfastSerializer\Plugin\DateTime
  */
-trait DateTimeHandler
+class DateTimeHandler implements PluginInterface, IsDateTime
 {
     /**
      * @inheritdoc
@@ -52,7 +54,7 @@ trait DateTimeHandler
     {
         return (
             isset($configurationData['typeHandler'][IsDateTime::CONFIGURATION_KEY])
-                &&
+            &&
             $configurationData['typeHandler'][IsDateTime::CONFIGURATION_KEY]
         );
     }

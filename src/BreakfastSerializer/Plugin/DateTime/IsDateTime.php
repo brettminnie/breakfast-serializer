@@ -1,10 +1,10 @@
 <?php
 
-namespace BDBStudios\BreakfastSerializer\Property\TypeHandler;
+namespace BDBStudios\BreakfastSerializer\Plugin\DateTime;
 
 /**
  * Interface IsDateTime
- * @package BDBStudios\BreakfastSerializer\Property\TypeHandler
+ * @package namespace BDBStudios\BreakfastSerializer\Plugin\DateTime\IsDateTime
  */
 interface IsDateTime
 {

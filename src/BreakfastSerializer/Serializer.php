@@ -10,20 +10,17 @@ use BDBStudios\BreakfastSerializer\Property\IsExcludable;
 use BDBStudios\BreakfastSerializer\Property\IsMappable;
 use BDBStudios\BreakfastSerializer\Property\MappableProperty;
 use BDBStudios\BreakfastSerializer\Property\DepthTraversableProperty;
-use BDBStudios\BreakfastSerializer\Property\TypeHandler\IsDateTime;
-use BDBStudios\BreakfastSerializer\Property\TypeHandler\DateTimeHandler;
 
 /**
  * Class Serializer
  * @package BDBStudios\BreakfastSerializer
  */
-abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable, IsExcludable, IsMappable, IsDateTime
+abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfigurable, IsExcludable, IsMappable
 {
     use ConfigurableProperty;
     use MappableProperty;
     use ExcludableProperty;
     use DepthTraversableProperty;
-    use DateTimeHandler;
 
     /**
      * @var int

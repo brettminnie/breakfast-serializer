@@ -3,6 +3,7 @@
 namespace BDBStudios\BreakfastSerializer\Plugin\DateTime;
 
 use BDBStudios\BreakfastSerializer\Plugin\PluginAbstract;
+use BDBStudios\BreakfastSerializer\Plugin\PluginExecutionException;
 
 /**
  * Class DateTimeHandler
@@ -77,7 +78,7 @@ class DateTimeHandler extends PluginAbstract implements IsDateTime
     public function execute(&$value = null)
     {
         if (true === empty($value)) {
-            throw new \PluginExecutionException('No value has been passed through for conversion');
+            throw new PluginExecutionException('No value has been passed through for conversion');
         }
 
         if (true === is_string($value) && true === $this->isISO8601String($value)) {

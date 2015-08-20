@@ -69,4 +69,15 @@ class DateTimeHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->plugin->isISO8601String($expected));
         $this->assertEquals($original, $expected);
     }
+
+    /**
+     * @expectedException \BDBStudios\BreakfastSerializer\Plugin\PluginExecutionException
+     */
+    public function testNoValueWillThrowAnException()
+    {
+        $this->assertEquals(
+            PluginRegistry::getPlugin($this->plugin)['plugin']->execute(),
+            $this->plugin
+        );
+    }
 }

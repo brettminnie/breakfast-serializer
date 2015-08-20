@@ -1,5 +1,5 @@
 serializer:
   default:
     config_path: "./config"
-  typeHandlers:
-    dateTime: false
+  typeHandler:
+      dateTime: true

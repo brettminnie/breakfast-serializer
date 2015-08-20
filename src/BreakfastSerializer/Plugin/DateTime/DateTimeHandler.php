@@ -11,14 +11,12 @@ use BDBStudios\BreakfastSerializer\Plugin\PluginExecutionException;
  */
 class DateTimeHandler extends PluginAbstract implements IsDateTime
 {
-    const PLUGIN_NAME = 'PLUGIN_DATE_TIME_TO_ISO';
-
     /**
      * @param bool $active
      */
     public function __construct($active = true)
     {
-        parent::__construct(self::PLUGIN_NAME, $active);
+        parent::__construct(IsDateTime::CONFIGURATION_KEY, $active);
     }
 
     /**
@@ -68,7 +66,7 @@ class DateTimeHandler extends PluginAbstract implements IsDateTime
         return (
             isset($configurationData['typeHandler'][IsDateTime::CONFIGURATION_KEY])
             &&
-            $configurationData['typeHandler'][IsDateTime::CONFIGURATION_KEY]
+            true === $configurationData['typeHandler'][IsDateTime::CONFIGURATION_KEY]
         );
     }
 

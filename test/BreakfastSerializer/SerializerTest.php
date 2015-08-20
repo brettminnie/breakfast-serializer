@@ -80,40 +80,4 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
         $this->instance->resetCurrentDepth();
         $this->assertNotEquals($maxDepth, $this->instance->getCurrentDepth());
     }
-
-    public function testDateIsConvertedToString()
-    {
-        $this->markTestSkipped('Refactoring datetime');
-        $testInstance = new DateTimeType();
-
-        $value = $testInstance->__get('dateTime');
-        $this->assertTrue($testInstance->isDateTime($value));
-        $stringValue = $testInstance->toISO8601Format($value);
-
-        $this->assertTrue(is_string($stringValue));
-
-        $this->assertEquals($value->format(\DateTime::ISO8601), $stringValue);
-    }
-
-    public function testDateIsSerializedToString()
-    {
-        $this->markTestSkipped('Refactoring datetime');
-
-        $testInstance = new DateTimeType();
-
-        $value       = $testInstance->__get('dateTime');
-        $stringValue = $testInstance->toISO8601Format($value);
-
-        $data = array(
-            'dateTime'      => $stringValue,
-            'invalidString' => $value->format(\DateTime::COOKIE),
-            'className'     => get_class($testInstance)
-        );
-
-        $this->instance->shouldReceive('serialize')->withAnyArgs()->andReturn(json_encode($data));
-
-        $serializedData = $this->instance->serialize($testInstance);
-
-        $this->assertContains($stringValue, $serializedData);
-    }
 }

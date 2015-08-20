@@ -154,29 +154,4 @@ abstract class Serializer implements IsSerializable, IsDepthTraversable, IsConfi
             $data[$cleanedVariableName] = $val;
         }
     }
-
-    /**
-     * @param  mixed $val
-     * @return mixed
-     */
-    protected function mapTypes($val)
-    {
-        $val = $this->mapDateTimeType($val);
-
-        return $val;
-    }
-    /**
-     * @param  mixed $val
-     * @return mixed
-     */
-    protected function mapDateTimeType($val)
-    {
-        $isEnabled = DateTimeHandler::isEnabledInConfiguration($this->getConfiguration('serializer'));
-
-        if (true === $isEnabled && $this->isDateTime($val)) {
-            $val = $this->toISO8601Format($val);
-        }
-
-        return $val;
-    }
 }

@@ -21,6 +21,16 @@ class DateTimeHandlerTest extends \PHPUnit_Framework_TestCase
     public function testSetUp()
     {
         $this->assertTrue($this->plugin instanceof DateTimeHandler);
+        $this->assertFalse($this->plugin->isEnabledInConfiguration(array()));
+        $this->assertTrue(
+            $this->plugin->isEnabledInConfiguration(
+                array(
+                    'typeHandler' => array (
+                        DateTimeHandler::CONFIGURATION_KEY => true
+                    )
+                )
+            )
+        );
     }
 
     public function testICanRegisterThePlugin()

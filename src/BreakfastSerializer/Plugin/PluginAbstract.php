@@ -31,7 +31,7 @@ abstract class PluginAbstract implements PluginInterface
     /**
      * @inheritdoc
      */
-    public abstract function execute();
+    public abstract function execute(&$value = null);
 
     /**
      * @inheritdoc

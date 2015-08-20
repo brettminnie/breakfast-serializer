@@ -34,9 +34,10 @@ interface PluginInterface
     public function isActive();
 
     /**
+     * @param mixed $value
      * @return PluginInterface
      */
-    public function execute();
+    public function execute(&$value = null);
 
     /**
      * @return string

@@ -14,8 +14,8 @@ branches:
     - master
     - develop
 
-install:
-  - composer require satooshi/php-coveralls
+# install:
+#  - composer require satooshi/php-coveralls
 
 before_script:
   - composer self-update

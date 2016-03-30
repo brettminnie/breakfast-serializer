@@ -4,6 +4,7 @@ namespace BDBStudios\BreakfastSerializerTests;
 
 use BDBStudios\BreakfastSerializer\Serializer;
 use BDBStudios\BreakfastSerializerTest\Fixtures\ComplexClass;
+use BDBStudios\BreakfastSerializerTest\Fixtures\TypeHandlers\DateTimeType;
 
 class SerializerTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,7 +18,9 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
                 'BDBStudios\BreakfastSerializer\Serializer',
                 array(Serializer::FORMAT_JSON, Serializer::MAX_DEPTH_NOT_SET)
             )
-            ->shouldDeferMissing();
+                ->shouldDeferMissing();
+
+
     }
 
     public function testSetup()
@@ -78,4 +81,3 @@ class SerializerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals($maxDepth, $this->instance->getCurrentDepth());
     }
 }
-

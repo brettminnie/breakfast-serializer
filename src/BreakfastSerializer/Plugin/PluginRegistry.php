@@ -31,7 +31,8 @@ final class PluginRegistry
         if (false === self::isRegistered($plugin)) {
             self::$data[$plugin->getName()] = array(
                 'active'    => $plugin->isActive(),
-                'classPath' => get_class($plugin)
+                'classPath' => get_class($plugin),
+                'plugin'    => $plugin
             );
         }
 

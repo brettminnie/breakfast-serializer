@@ -1,0 +1,5 @@
+serializer:
+  default:
+    config_path: "./config"
+  typeHandler:
+      dateTime: true
